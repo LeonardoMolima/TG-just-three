@@ -1,0 +1,16 @@
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root{
+  height: 100%;
+}
+
+body{
+  font-family: sans-serif;
+  background: rgb(0,0,0);
+  background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(21,57,89,1) 50%);
+}
