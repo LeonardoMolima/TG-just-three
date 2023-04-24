@@ -1,9 +1,25 @@
 import { Form } from "react-router-dom";
+import { useState, useContext } from "react";
+import { Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/auth";
 
 import "./login.css";
 import setaLogo from "../../assets/img/setas-logo.png";
 
 function Login(){
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const { logIn, loadingAuth } = useContext(AuthContext);
+
+   async function handeLogIn(e){
+        e.preventDefault();
+
+        if(email !== '' & password !== ''){
+            await logIn(email, password);
+        }
+    }
+
     return(
         <div className="container-center">
             <div className="container-login">
@@ -11,20 +27,23 @@ function Login(){
                     <label>JustThree</label>
                 </div>
 
-                <form>
+                <form onSubmit={handeLogIn}>
                     <h1>Email</h1>
-                    <input type="text"/>
+                    <input type="text" value={email} onChange={(e)=>{setEmail(e.target.value)}}/>
                     <br/>
                     <h1>Senha</h1>
-                    <input type="password"/>
+                    <input type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}}/>
                     <br/>
-                    <button className="btn-entrar">Entrar</button>
+                    <input type="submit" value={loadingAuth ? 'Carregando...' : 'Entrar'} className='btn-entrar'/>
                     <a href="/">Esqueceu a senha?</a>
                     <br/>
                         <hr/>
                     <br/>
-                    <button className="btn-cadastrar">Cadastrar</button>
                 </form>
+
+                <Link to='/cadastro'>
+                    <button className="btn-cadastrar">Cadastrar</button>
+                </Link>
 
             </div>
             <footer>

@@ -1,0 +1,93 @@
+.logoSideBar{
+    width: 200px;
+    margin: 10px;
+    padding: 0;
+    box-sizing: border-box;
+}
+.logoSideBar img{
+    width: 150px;
+    height: 75px;
+}
+
+.sideBar{
+    width: 220px;
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.sideBar a{
+    display: block;
+    padding: 16px;
+    display: flex;
+    text-decoration: none;
+    color: white;
+    flex-direction: row;
+    align-items: center;
+    transition: ease-in-out 0.4s;
+    border-radius: 10px;
+}
+
+.sideBar a svg{
+    margin-right: 0.7rem;
+}
+
+.sideBar a img{
+    margin-right: 0.7rem;
+    width: 24px;
+    border-radius: 100%;
+}
+
+.sideBar a:hover{
+    background-color: rgb(22, 22, 22);
+    font-size: 17px;
+}
+
+.content{
+    margin-left: 220px;
+    padding: 1px 16px;
+}
+
+@media screen and (max-width: 700px){
+
+    .sideBar{
+        width: 100%;
+        height: auto;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+    }
+
+    div.content{
+        margin-left: 0;
+    }
+
+    .sideBar a{
+        float: left;
+        text-align: center;
+    }
+
+    .sideBar div{
+        display: none;
+    }
+
+    .sideBar a span{
+        display: none;
+    }
+
+    .sideBar a svg{
+        margin-right: 0;
+    }
+
+    .sideBar a img{
+        margin-right: 0;
+    }
+
+    
+    
+}
