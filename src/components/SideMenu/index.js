@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import { Link } from 'react-router-dom';
-import { AiOutlineHome, AiOutlineBell, AiOutlineSearch, AiOutlineMessage, AiOutlineStar} from 'react-icons/ai'
+import { AiOutlineHome, AiOutlineBell, AiOutlineSearch, AiOutlineMessage, AiOutlineStar} from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 
 import avatarPerfil from '../../assets/img/avatar.png';
