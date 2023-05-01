@@ -69,4 +69,15 @@
     transition: all 0.5;
 }
 
+.inputs-post label{
+    color: white;
+    font-size: 15px;
+    margin-left: 4px;
+    margin-right: 4px;
+}
+
+.options-add-post img{
+    height: 40px;
+    margin-right: 1.0em;
+}
 

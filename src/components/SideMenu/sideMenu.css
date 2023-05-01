@@ -60,7 +60,7 @@
     .sideBar{
         width: 100%;
         height: auto;
-        position: absolute;
+        position:absolute;
         display: flex;
         align-items: center;
         justify-content: center;

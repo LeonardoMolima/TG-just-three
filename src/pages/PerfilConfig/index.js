@@ -10,7 +10,7 @@ import SideMenu from "../../components/SideMenu";
 import avatarPerfil from '../../assets/img/avatar.png';
 import { AiOutlineCamera } from 'react-icons/ai'
 import "./perfilConfig.css";
-import { async } from "@firebase/util";
+
 
 function PerfilConfig(){
 

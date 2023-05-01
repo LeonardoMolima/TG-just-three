@@ -1,7 +1,7 @@
 import { useState, createContext, useEffect } from "react";
 import { auth, db } from '../services/FirebaseConnection';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { collection, doc, getDoc, setDoc, addDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
 
 import { Await, useNavigate } from "react-router-dom";
@@ -15,6 +15,25 @@ function AuthProvider({ children }){
     const [loading, setLoading] = useState(true);
 
     const navigate = useNavigate();
+
+    const data = new Date();
+
+    let dataAtual = formataData(data);
+
+    function addZeroEsquerda(num){
+        return num >= 10 ? num :`0${num}`;
+    }
+
+    function formataData(data){
+        const dia = addZeroEsquerda(data.getDate());
+        const mes = addZeroEsquerda(data.getMonth() + 1);
+        const ano = addZeroEsquerda(data.getFullYear());
+        const hora = addZeroEsquerda(data.getHours());
+        const minuto = addZeroEsquerda(data.getMinutes());
+        const segundos = addZeroEsquerda(data.getSeconds());
+
+        return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundos}`;
+    }
 
     useEffect(() => {
         async function loadUser(){
@@ -117,6 +136,40 @@ function AuthProvider({ children }){
         setUser(null);
     }
 
+    async function addPost(titulo, tags, conteudo, imagem){
+
+        if(imagem === null){
+            await addDoc(collection(db, 'posts'), {
+                uid_userPost: user.uid,
+                titulo:titulo,
+                tags:tags,
+                conteudo:conteudo,
+                imagem:null,
+                dataPost: dataAtual
+            })
+            .then(()=>{
+                toast.success('POST ENVIADO!');
+            })
+            .catch((error)=>{
+                console.log("ERRO: "+ error);
+            });
+        }else{
+            await addDoc(collection(db, 'posts'), {
+                titulo:titulo,
+                tags:tags,
+                conteudo:conteudo,
+                imagem:imagem,
+                dataPost: dataAtual
+            })
+            .then(()=>{
+                toast.success('POST ENVIADO!');
+            })
+            .catch((error)=>{
+                console.log("ERRO: "+ error);
+            });
+        }
+    }
+
     return(
         <AuthContext.Provider value={{
             logado: !!user,
@@ -128,6 +181,7 @@ function AuthProvider({ children }){
             loading,
             storageUser,
             setUser,
+            addPost,
         }}>
             {children}
         </AuthContext.Provider>
