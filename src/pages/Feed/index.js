@@ -6,6 +6,7 @@ import firebase from "firebase/compat/app";
 import { doc, setDoc, collection, addDoc, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
 import { query, where, orderBy } from "firebase/firestore";
 
+
 import { BsCardImage } from 'react-icons/bs';
 import avatarPerfil from '../../assets/img/avatar.png';
 import SideMenu from "../../components/SideMenu";
@@ -26,7 +27,7 @@ function Feed(){
     useEffect(()=>{
         async function handleBtnBuscaPosts(){
 
-            const q = await query(collection(db,"posts"),orderBy("dataPost", "desc"))
+            const q = await query(collection(db,"posts"),orderBy("dataOrdem","desc"))
 
             const postsRef = onSnapshot(q, (snapshot) => {
             let lista = [];
@@ -38,7 +39,8 @@ function Feed(){
                 tags: doc.data().tags,
                 conteudo: doc.data().conteudo,
                 imagem: doc.data().imagem,
-                data: doc.data().dataPost,
+                data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
+                hora: doc.data().horaPost,
                 id_autor: doc.data().uid_userPost
                 })
             })
@@ -56,21 +58,23 @@ function Feed(){
 
     
 
-    
-
     function handleFile(e){
+        console.log(e.target.files[0])
+
         if(e.target.files[0]){
             const image = e.target.files[0];
 
             if(image.type === "image/jpeg" || image.type === "image/png"){
                 setImgPost(image);
                 setImgUrl(URL.createObjectURL(image));
-                console.log(image.name);
             }else{
                 toast.error("Tipo de arquivo não suportado!!");
                 setImgPost(null);
                 return;
             }
+
+            console.log(imgPost);
+            console.log(imgUrl);
         }
     }
 
@@ -83,6 +87,7 @@ function Feed(){
        setTagsPost('');
        setConteudoPost('');
        setImgPost(null);
+       setImgUrl(null);
    }
 
     return(
@@ -130,10 +135,11 @@ function Feed(){
                             <span>USER ID: {post.id_autor}</span><br/>
                             <span>id: {post.id}</span><br/>
                             <span>Data: {post.data}</span><br/>
+                            <span>Hora: {post.hora}</span><br/>
                             <span>Titulo: {post.titulo}</span><br/>
                             <span>Tags: {post.tags}</span><br/>
                             <span>Conteudo: {post.conteudo}</span><br/>
-                            <span>{post.imagem === null ? <></> : "Imagem: "+ post.imagem}</span><br/>
+                            <span>{post.imagem === null ? <></> : <img src={post.imagem}/>}</span><br/>
                             </>
                         )
                     })}

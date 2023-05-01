@@ -1,8 +1,9 @@
 import { useState, createContext, useEffect } from "react";
-import { auth, db } from '../services/FirebaseConnection';
+import { auth, db, storage } from '../services/FirebaseConnection';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { collection, doc, getDoc, setDoc, addDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 import { Await, useNavigate } from "react-router-dom";
 import { async } from "@firebase/util";
@@ -19,6 +20,7 @@ function AuthProvider({ children }){
     const data = new Date();
 
     let dataAtual = formataData(data);
+    let horaAtual = formataHora(data);
 
     function addZeroEsquerda(num){
         return num >= 10 ? num :`0${num}`;
@@ -28,11 +30,16 @@ function AuthProvider({ children }){
         const dia = addZeroEsquerda(data.getDate());
         const mes = addZeroEsquerda(data.getMonth() + 1);
         const ano = addZeroEsquerda(data.getFullYear());
+
+        return [dia, mes, ano];
+    }
+
+    function formataHora(data){
         const hora = addZeroEsquerda(data.getHours());
         const minuto = addZeroEsquerda(data.getMinutes());
         const segundos = addZeroEsquerda(data.getSeconds());
 
-        return `${dia}/${mes}/${ano} ${hora}:${minuto}:${segundos}`;
+        return `${hora}:${minuto}:${segundos}`;
     }
 
     useEffect(() => {
@@ -136,6 +143,38 @@ function AuthProvider({ children }){
         setUser(null);
     }
 
+    async function handleUploadFotoPost(tituloPost, tagsPost, conteudoPost, imagem){
+        const currentUid = user.uid;
+
+        const updloadRef = ref(storage, `post/${currentUid}/${tituloPost}/${imagem.name}`);
+
+        const uploadTask =uploadBytes(updloadRef, imagem)
+        .then( (snapshot) => {
+            getDownloadURL(snapshot.ref).then( async ( downloadURL) => {
+                let urlFoto = downloadURL;
+
+                await addDoc(collection(db, 'posts'), {
+                    uid_userPost: user.uid,
+                    titulo:tituloPost,
+                    tags:tagsPost,
+                    conteudo:conteudoPost,
+                    imagem:urlFoto,
+                    dataOrdem: Date.now(),
+                    diaPost: dataAtual[0],
+                    mesPost: dataAtual[1],
+                    anoPost: dataAtual[2],
+                    horaPost: horaAtual
+                })
+                .then(()=>{
+                    toast.success('POST ENVIADO!');
+                })
+                .catch((error)=>{
+                    console.log("ERRO: "+ error);
+                });
+                })
+        })
+    }
+
     async function addPost(titulo, tags, conteudo, imagem){
 
         if(imagem === null){
@@ -145,7 +184,11 @@ function AuthProvider({ children }){
                 tags:tags,
                 conteudo:conteudo,
                 imagem:null,
-                dataPost: dataAtual
+                dataOrdem: Date.now(),
+                diaPost: dataAtual[0],
+                mesPost: dataAtual[1],
+                anoPost: dataAtual[2],
+                horaPost: horaAtual
             })
             .then(()=>{
                 toast.success('POST ENVIADO!');
@@ -154,19 +197,7 @@ function AuthProvider({ children }){
                 console.log("ERRO: "+ error);
             });
         }else{
-            await addDoc(collection(db, 'posts'), {
-                titulo:titulo,
-                tags:tags,
-                conteudo:conteudo,
-                imagem:imagem,
-                dataPost: dataAtual
-            })
-            .then(()=>{
-                toast.success('POST ENVIADO!');
-            })
-            .catch((error)=>{
-                console.log("ERRO: "+ error);
-            });
+            await handleUploadFotoPost(titulo, tags, conteudo, imagem);
         }
     }
 
