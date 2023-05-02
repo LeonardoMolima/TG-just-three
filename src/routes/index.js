@@ -5,6 +5,7 @@ import Register from '../pages/Register';
 import Feed from '../pages/Feed';
 import Perfil from '../pages/Perfil';
 import PerfilConfig from '../pages/PerfilConfig';
+import PerfilAnotherUser from '../pages/PerfilAnotherUser';
 
 import Private from './Private';
 
@@ -17,6 +18,7 @@ function RoutesApp(){
             <Route path='/feed' element={ <Private> <Feed/> </Private> }/>
             <Route path='/perfil' element={ <Private> <Perfil/> </Private> }/>
             <Route path='/perfil/config' element={ <Private> <PerfilConfig/> </Private> }/>
+            <Route path='/perfilUser/:idUser' element={ <Private> <PerfilAnotherUser/> </Private> }/>
         </Routes>
     )
 }

@@ -81,3 +81,90 @@
     margin-right: 1.0em;
 }
 
+.card-posts-feed{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1.4em;
+}
+
+.posts-feed{
+    padding: 20px;
+    width: 600px;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    margin-block: 1.0em;
+}
+
+.infos-autor-post {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.infos-autor-post img{
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 5px;
+    -webkit-box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
+}
+
+.infos-autor-post .img-names{
+    display: flex;
+    align-items: center;
+}
+
+.infos-autor-post .nome-nomeUser{
+    display: flex;
+    flex-direction: column;
+}
+
+.infos-autor-post .nome-nomeUser strong{
+    color: white;
+}
+
+.infos-autor-post .nome-nomeUser a{
+    margin: 0;
+    opacity: 0.6;
+}
+
+.infos-autor-post .data-hora-post{
+    display: flex;
+}
+
+.data-hora-post span{
+    margin-left: 10px;
+}
+
+.conteudo-post{
+    margin-top: 1.4em;
+}
+
+.conteudo-post h1{
+    margin-bottom: 0.5em;
+}
+
+.conteudo-post h2{
+    font-weight: normal;
+    margin-top: 1.0em;
+    color: white;
+    font-size: 20px;
+}
+
+.conteudo-post img{
+    border-radius: 8px;
+    object-fit: cover;
+    max-height: 250px;
+}
+
+.conteudo-post .img-conteudo-post{
+    display: flex;
+    justify-content: center;
+}
+

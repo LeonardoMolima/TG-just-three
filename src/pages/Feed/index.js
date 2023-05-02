@@ -1,4 +1,5 @@
 import { async } from "@firebase/util";
+import { Link } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../contexts/auth";
 import { db, storage } from "../../services/FirebaseConnection";
@@ -19,6 +20,7 @@ function Feed(){
     const [tituloPost, setTituloPost] = useState('');
     const [tagsPost, setTagsPost] = useState('');
     const [conteudoPost, setConteudoPost] = useState('');
+    const [imgUserPost, setImgUserPost] = useState('');
     const [imgPost, setImgPost] = useState(null);
     const [imgUrl, setImgUrl] = useState(null);
 
@@ -41,9 +43,12 @@ function Feed(){
                 imagem: doc.data().imagem,
                 data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
                 hora: doc.data().horaPost,
-                id_autor: doc.data().uid_userPost
+                id_autor: doc.data().uid_userPost,
+                fotoAutor: doc.data().fotoUserPost,
+                nomeAutor: doc.data().nomeAutor,
+                nomeUserAutor: doc.data().nomeUserAutor
                 })
-            })
+            });
 
             setPosts(lista);
     
@@ -128,19 +133,35 @@ function Feed(){
                     </form>
                 </div>
 
-                <div>
+                <div className="card-posts-feed">
+                    
                     {posts.map( (post) => {
                         return (
-                            <>
-                            <span>USER ID: {post.id_autor}</span><br/>
-                            <span>id: {post.id}</span><br/>
-                            <span>Data: {post.data}</span><br/>
-                            <span>Hora: {post.hora}</span><br/>
-                            <span>Titulo: {post.titulo}</span><br/>
-                            <span>Tags: {post.tags}</span><br/>
-                            <span>Conteudo: {post.conteudo}</span><br/>
-                            <span>{post.imagem === null ? <></> : <img src={post.imagem}/>}</span><br/>
-                            </>
+                            <div className="posts-feed">
+                                <div className="infos-autor-post">
+                                    <div className="img-names">
+                                        {post.fotoAutor === null ? <img src={avatarPerfil}/> : <img src={post.fotoAutor}/>}
+                                        <div className="nome-nomeUser">
+                                            <strong>{post.nomeAutor}</strong>
+                                            <Link to={"/perfilUser/"+post.id_autor}>@{post.nomeUserAutor}</Link>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="data-hora-post">
+                                        <span>{post.data}</span>
+                                        <span>{post.hora}</span>
+                                    </div>
+                                </div>
+                                
+                                <div className="conteudo-post">
+                                    <h1>{post.titulo}</h1>
+                                    <span>{post.tags}</span><br/>
+                                    <h2>{post.conteudo}</h2><br/>
+                                    <div className="img-conteudo-post">
+                                    {post.imagem === null ? <></> : <img src={post.imagem}/>}
+                                    </div>
+                                </div>
+                            </div>
                         )
                     })}
                 </div>

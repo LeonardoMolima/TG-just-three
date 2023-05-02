@@ -155,6 +155,9 @@ function AuthProvider({ children }){
 
                 await addDoc(collection(db, 'posts'), {
                     uid_userPost: user.uid,
+                    fotoUserPost: user.fotoPerfil,
+                    nomeAutor: user.nome,
+                    nomeUserAutor: user.nomeUser,
                     titulo:tituloPost,
                     tags:tagsPost,
                     conteudo:conteudoPost,
@@ -180,6 +183,9 @@ function AuthProvider({ children }){
         if(imagem === null){
             await addDoc(collection(db, 'posts'), {
                 uid_userPost: user.uid,
+                fotoUserPost: user.fotoPerfil,
+                nomeAutor: user.nome,
+                nomeUserAutor: user.nomeUser,
                 titulo:titulo,
                 tags:tags,
                 conteudo:conteudo,
