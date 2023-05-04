@@ -1,11 +1,9 @@
-import { async } from "@firebase/util";
 import { Link } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/auth";
-import { db, storage } from "../../services/FirebaseConnection";
-import firebase from "firebase/compat/app";
-import { doc, setDoc, collection, addDoc, getDoc, getDocs, onSnapshot } from 'firebase/firestore';
-import { query, where, orderBy } from "firebase/firestore";
+import { db } from "../../services/FirebaseConnection";
+import { collection, onSnapshot } from 'firebase/firestore';
+import { query, orderBy } from "firebase/firestore";
 
 
 import { BsCardImage } from 'react-icons/bs';
@@ -20,7 +18,6 @@ function Feed(){
     const [tituloPost, setTituloPost] = useState('');
     const [tagsPost, setTagsPost] = useState('');
     const [conteudoPost, setConteudoPost] = useState('');
-    const [imgUserPost, setImgUserPost] = useState('');
     const [imgPost, setImgPost] = useState(null);
     const [imgUrl, setImgUrl] = useState(null);
 
@@ -31,7 +28,7 @@ function Feed(){
 
             const q = await query(collection(db,"posts"),orderBy("dataOrdem","desc"))
 
-            const postsRef = onSnapshot(q, (snapshot) => {
+            onSnapshot(q, (snapshot) => {
             let lista = [];
     
             snapshot.forEach((doc) => {
@@ -52,10 +49,8 @@ function Feed(){
 
             setPosts(lista);
     
-            })
-            .catch((error) => {
-            console.log("DEU ALGUM ERRO AO BUSCAR")
-            }) 
+            });
+
         }
 
         handleBtnBuscaPosts();
@@ -104,7 +99,7 @@ function Feed(){
                     <form onSubmit={handleSubmit}>
                         <div className="area-post">
                             <div className="post">
-                                <img src={user.fotoPerfil === null ? avatarPerfil : user.fotoPerfil}/>
+                                <img src={user.fotoPerfil === null ? avatarPerfil : user.fotoPerfil} alt="Foto Perfil"/>
                                 <div className="inputs-post">
                                 <div>
                                     <label>Titulo:</label>
@@ -140,7 +135,7 @@ function Feed(){
                             <div className="posts-feed">
                                 <div className="infos-autor-post">
                                     <div className="img-names">
-                                        {post.fotoAutor === null ? <img src={avatarPerfil}/> : <img src={post.fotoAutor}/>}
+                                        {post.fotoAutor === null ? <img src={avatarPerfil} alt="Foto Perfil Autor Post"/> : <img src={post.fotoAutor} alt="Foto Perfil Autor Post"/>}
                                         <div className="nome-nomeUser">
                                             <strong>{post.nomeAutor}</strong>
                                             <Link to={"/perfilUser/"+post.id_autor}>@{post.nomeUserAutor}</Link>
@@ -158,7 +153,7 @@ function Feed(){
                                     <span>{post.tags}</span><br/>
                                     <h2>{post.conteudo}</h2><br/>
                                     <div className="img-conteudo-post">
-                                    {post.imagem === null ? <></> : <img src={post.imagem}/>}
+                                    {post.imagem === null ? <></> : <img src={post.imagem} alt="Foto Postagem"/>}
                                     </div>
                                 </div>
                             </div>

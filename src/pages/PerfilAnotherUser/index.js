@@ -1,29 +1,33 @@
 import SideMenu from "../../components/SideMenu";
 import { Link, useParams, Navigate } from 'react-router-dom';
-import { VscSettingsGear }  from 'react-icons/vsc';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../contexts/auth';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, query, collection, where, orderBy, onSnapshot, addDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../services/FirebaseConnection";
+
+import { toast } from "react-toastify";
 
 import avatarPerfil from '../../assets/img/avatar.png';
 import './perfilAnotherUser.css';
-import { async } from "@firebase/util";
-
 
 function PerfilAnotherUser(){
 
-    const { user } = useContext(AuthContext);
+    const { user, storageUser } = useContext(AuthContext);
     const [ anotherUser, setAnotherUser ] = useState({});
+    const [ followExists, setFollowExists] = useState(null);
+    const [posts, setPosts] = useState([]);
+    const [idUnfollow, setIdUnfollow] = useState([]);
 
     const { idUser } = useParams();
 
-    console.log("ID URL: ",idUser)
-    console.log("ID USER: ",user.uid)
-
     useEffect(()=>{
+        buscaAnotherUser();
+        verificaFollow();
+        buscaPosts();
+        
+    },[])
 
-        async function handleBtnBuscaPosts(){
+        async function buscaAnotherUser(){
 
             const userRef = doc(db, "users", idUser ) 
 
@@ -42,14 +46,76 @@ function PerfilAnotherUser(){
             
         }
 
-        handleBtnBuscaPosts();
-    },[])
+        async function buscaPosts(){
 
-    if(idUser == user.uid){
-        return <Navigate to='/perfil'/>
+            const queryPosts = await query(collection(db,"posts"),where("uid_userPost" ,"==", idUser),orderBy("dataOrdem","desc"))
+
+            const postsRef = onSnapshot(queryPosts, (snapshot) => {
+            let lista = [];
+    
+            snapshot.forEach((doc) => {
+                lista.push({
+                id: doc.id,    
+                titulo: doc.data().titulo,
+                tags: doc.data().tags,
+                conteudo: doc.data().conteudo,
+                imagem: doc.data().imagem,
+                data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
+                hora: doc.data().horaPost,
+                id_autor: doc.data().uid_userPost,
+                fotoAutor: doc.data().fotoUserPost,
+                nomeAutor: doc.data().nomeAutor,
+                nomeUserAutor: doc.data().nomeUserAutor
+                })
+            });
+
+            setPosts(lista);
+            console.log("POSTS LISTA: ",lista);
+    
+            })
+            
+
+        }
+
+        async function verificaFollow(){
+
+            const queryVerificaFollow = await query(collection(db,"follow_followed"),where("user_seguidor" ,"==", storageUser.uid),where("user_seguido" ,"==", idUser))
+
+            if(queryVerificaFollow){
+                console.log(true);
+                setFollowExists(true);
+            }else{
+                setFollowExists(false);
+            }
+ 
+        }
+
+        
+
+
+    async function follow(){
+        await addDoc(collection(db, 'follow_followed'), {
+            user_seguidor: user.uid,
+            user_seguido: idUser
+        })
+        .then(()=>{
+            toast.success('COMEÇOU A SEGUIR!');
+            setFollowExists(true);
+        })
+        .catch((error)=>{
+            console.log("ERRO: "+ error);
+        });
+    }
+
+    async function unfollow(){
+        console.log("teste");
     }
 
     
+            
+    if(idUser == user.uid){
+        return <Navigate to='/perfil'/>
+    }
 
     return(
         <div>
@@ -64,7 +130,7 @@ function PerfilAnotherUser(){
                         <div className="row1">
                             <h1>{anotherUser.nome}</h1>
                             <span>@{anotherUser.nomeUser}</span>
-                            <button>Seguir</button>
+                            {followExists === true ? <button onClick={unfollow}>Seguindo</button> : <button onClick={follow}>Seguir</button>}
                         </div>
                         <div className="row2">
                             <h2>Posts 0</h2>
@@ -80,6 +146,39 @@ function PerfilAnotherUser(){
                 <div className="card-btn-menus">
                     <button className="btn-menu-posts">Posts</button>
                     <button className="btn-menu-sobre">Sobre</button>
+                </div>
+
+                <div className="card-posts-feed">
+                    
+                    {posts.map( (post) => {
+                        return (
+                            <div className="posts-feed">
+                                <div className="infos-autor-post">
+                                    <div className="img-names">
+                                        {post.fotoAutor === null ? <img src={avatarPerfil}/> : <img src={post.fotoAutor}/>}
+                                        <div className="nome-nomeUser">
+                                            <strong>{post.nomeAutor}</strong>
+                                            <Link to={"/perfilUser/"+post.id_autor}>@{post.nomeUserAutor}</Link>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="data-hora-post">
+                                        <span>{post.data}</span>
+                                        <span>{post.hora}</span>
+                                    </div>
+                                </div>
+                                
+                                <div className="conteudo-post">
+                                    <h1>{post.titulo}</h1>
+                                    <span>{post.tags}</span><br/>
+                                    <h2>{post.conteudo}</h2><br/>
+                                    <div className="img-conteudo-post">
+                                    {post.imagem === null ? <></> : <img src={post.imagem}/>}
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })}
                 </div>
             </div>
             
