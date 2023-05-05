@@ -167,4 +167,42 @@
     display: flex;
     justify-content: center;
 }
+@media screen and (max-width: 830px){
+    
+    .area-post{
+        width: 500px;    
+        margin-left: 6px;
+    }
+    .inputs-post{
+        display: block;
+        width: 420px;
+    }
+    .inputs-post label{
+        display: inline;
+    }
+    .inputs-post input{
+        margin-top: 2px;
+        margin-bottom: 8px;
+        width: 400px;
+    }
+    .inputs-post textarea{
+        margin-top: 8px;
+        min-width: 400px;
+        min-height: 70px;
+    }
+    .options-add-post{
+        margin-right: 8px;
+    }
 
+    /*area do feed*/
+    .posts-feed{
+        width: 500px;    
+        margin-left: 8px;
+    }  
+}
+
+@media screen and (max-width: 700px){
+    .area-post{
+        margin-top: 50px;
+    }
+}
