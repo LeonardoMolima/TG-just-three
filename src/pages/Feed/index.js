@@ -5,7 +5,8 @@ import { db } from "../../services/FirebaseConnection";
 import { collection, onSnapshot } from 'firebase/firestore';
 import { query, orderBy } from "firebase/firestore";
 
-
+import { AiOutlineStar } from 'react-icons/ai';
+import { BsChatText } from 'react-icons/bs';
 import { BsCardImage } from 'react-icons/bs';
 import avatarPerfil from '../../assets/img/avatar.png';
 import SideMenu from "../../components/SideMenu";
@@ -155,6 +156,11 @@ function Feed(){
                                     <div className="img-conteudo-post">
                                     {post.imagem === null ? <></> : <img src={post.imagem} alt="Foto Postagem"/>}
                                     </div>
+                                </div>
+
+                                <div className='btns-post'>
+                                    <button><AiOutlineStar color='#FFF' size={25}/> Favoritar</button>
+                                    <Link to={"/comentarios/"+post.id}><button><BsChatText color='#FFF' size={24} />Comentários</button></Link>
                                 </div>
                             </div>
                         )

@@ -1,0 +1,74 @@
+.card-posts-comentarios{
+    justify-content: center;
+    display: flex;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.card-comentarios{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.card-comentarios h1{
+    padding-inline: 15px;
+    font-size: 17px;
+    width: fit-content;
+    border-top: 1px solid white;
+}
+
+.comentario{
+    display: flex;
+    align-items: center;
+}
+
+.comentario img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 5px;
+    -webkit-box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
+}
+
+.comentario textarea{
+    resize: none;
+    margin-top: 4px;
+    font-size: 15px;
+    font-family: sans-serif;
+    padding-inline: 3px;
+    background-color: #D9CDC1;
+    border: 2px solid white;
+    border-color: white;
+    border-radius: 8px;
+    min-width: 500px;
+    min-height: 70px;
+    outline: none;
+}
+
+.add-comentario{
+    margin-top: 1.0em;
+    display: flex;
+    justify-content: center;
+}
+
+.add-comentario form{
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.2);
+    width:fit-content;
+    display: flex;
+    justify-content: right;
+    flex-wrap: wrap;
+    border-radius: 8px;
+}
+
+.add-comentario form button{
+    align-self: flex-end;
+    margin-top: 1.0em;
+    background-color: #0094FF;
+    width: 100px;
+}

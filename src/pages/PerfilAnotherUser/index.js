@@ -7,6 +7,8 @@ import { db } from "../../services/FirebaseConnection";
 
 import { toast } from "react-toastify";
 
+import { AiOutlineStar } from 'react-icons/ai';
+import { BsChatText } from 'react-icons/bs';
 import avatarPerfil from '../../assets/img/avatar.png';
 import './perfilAnotherUser.css';
 
@@ -130,12 +132,11 @@ function PerfilAnotherUser(){
                         <div className="row1">
                             <h1>{anotherUser.nome}</h1>
                             <span>@{anotherUser.nomeUser}</span>
-                            {followExists === true ? <button onClick={unfollow}>Seguindo</button> : <button onClick={follow}>Seguir</button>}
+                            {followExists === true ? <button onClick={unfollow}>Seguindo</button> : <button onClick={follow}>Favoritar Perfil</button>}
                         </div>
                         <div className="row2">
                             <h2>Posts 0</h2>
-                            <h2>Seguidores 0</h2>
-                            <h2>Seguindo 0</h2>
+                            <h2>Favoritos 0</h2>
                         </div>
                         <div className="row3">
                             <h2 className="bio">{anotherUser.biografia === null ? "" : anotherUser.biografia}</h2>
@@ -175,6 +176,11 @@ function PerfilAnotherUser(){
                                     <div className="img-conteudo-post">
                                     {post.imagem === null ? <></> : <img src={post.imagem}/>}
                                     </div>
+                                </div>
+
+                                <div className='btns-post'>
+                                    <button><AiOutlineStar color='#FFF' size={25}/> Favoritar</button>
+                                    <Link to={"/comentarios/"+post.id}><button><BsChatText color='#FFF' size={24} />Comentários</button></Link>
                                 </div>
                             </div>
                         )

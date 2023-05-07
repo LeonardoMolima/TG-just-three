@@ -5,8 +5,7 @@ import { collection, doc, getDoc, setDoc, addDoc } from "firebase/firestore";
 import { toast } from 'react-toastify';
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
-import { Await, useNavigate } from "react-router-dom";
-import { async } from "@firebase/util";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext({});
 
@@ -178,6 +177,30 @@ function AuthProvider({ children }){
         })
     }
 
+    async function addComment(conteudo, idPostComentado){
+
+        await addDoc(collection(db, 'comments'), {
+            uid_userPost: user.uid,
+            fotoUserPost: user.fotoPerfil,
+            nomeAutor: user.nome,
+            nomeUserAutor: user.nomeUser,
+            uid_postComentado: idPostComentado,
+            conteudo:conteudo,
+            dataOrdem: Date.now(),
+            diaPost: dataAtual[0],
+            mesPost: dataAtual[1],
+            anoPost: dataAtual[2],
+            horaPost: horaAtual
+        })
+        .then(()=>{
+            toast.success('COMENTÁRIO ENVIADO!');
+        })
+        .catch((error)=>{
+            console.log("ERRO: "+ error);
+        });
+
+    }
+
     async function addPost(titulo, tags, conteudo, imagem){
 
         if(imagem === null){
@@ -219,6 +242,7 @@ function AuthProvider({ children }){
             storageUser,
             setUser,
             addPost,
+            addComment,
         }}>
             {children}
         </AuthContext.Provider>

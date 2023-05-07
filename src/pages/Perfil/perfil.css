@@ -52,10 +52,10 @@
 }
 
 .card-info .row2{
+    width: 240px;
     font-size: 10px;
     margin-top: 1.0em;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     opacity: 0.9;
 }

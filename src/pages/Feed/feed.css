@@ -28,7 +28,7 @@
 
 .post textarea{
     resize: none;
-    margin-top: 4px;
+    margin-top: 1.0em;
     font-size: 15px;
     font-family: sans-serif;
     padding-inline: 3px;
@@ -166,5 +166,31 @@
 .conteudo-post .img-conteudo-post{
     display: flex;
     justify-content: center;
+}
+
+.btns-post{
+    height: fit-content;
+    margin-top: 1.0em;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.btns-post a{
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+}
+
+.btns-post button{
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+}
+
+.btns-post svg{
+    margin-right: 10px;
 }
 

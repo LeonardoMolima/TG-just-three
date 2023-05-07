@@ -6,6 +6,7 @@ import Feed from '../pages/Feed';
 import Perfil from '../pages/Perfil';
 import PerfilConfig from '../pages/PerfilConfig';
 import PerfilAnotherUser from '../pages/PerfilAnotherUser';
+import Comentarios from '../pages/Comentarios';
 
 import Private from './Private';
 
@@ -19,6 +20,7 @@ function RoutesApp(){
             <Route path='/perfil' element={ <Private> <Perfil/> </Private> }/>
             <Route path='/perfil/config' element={ <Private> <PerfilConfig/> </Private> }/>
             <Route path='/perfilUser/:idUser' element={ <Private> <PerfilAnotherUser/> </Private> }/>
+            <Route path='/comentarios/:idPost' element={ <Private> <Comentarios/> </Private> }/>
         </Routes>
     )
 }

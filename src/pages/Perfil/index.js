@@ -4,6 +4,9 @@ import { VscSettingsGear }  from 'react-icons/vsc';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/auth';
 
+
+import { AiOutlineStar } from 'react-icons/ai';
+import { BsChatText } from 'react-icons/bs';
 import { db } from "../../services/FirebaseConnection";
 import { collection, query, orderBy, where, onSnapshot } from "firebase/firestore";
 
@@ -71,8 +74,7 @@ function Perfil(){
                         </div>
                         <div className="row2">
                             <h2>Posts 0</h2>
-                            <h2>Seguidores 0</h2>
-                            <h2>Seguindo 0</h2>
+                            <h2>Favoritos 0</h2>
                         </div>
                         <div className="row3">
                             <h2 className="bio">{user.biografia === null ? "" : user.biografia}</h2>
@@ -112,6 +114,11 @@ function Perfil(){
                                     <div className="img-conteudo-post">
                                     {post.imagem === null ? <></> : <img src={post.imagem}/>}
                                     </div>
+                                </div>
+
+                                <div className='btns-post'>
+                                    <button><AiOutlineStar color='#FFF' size={25}/> Favoritar</button>
+                                    <Link to={"/comentarios/"+post.id}><button><BsChatText color='#FFF' size={24} />Comentários</button></Link>
                                 </div>
                             </div>
                         )

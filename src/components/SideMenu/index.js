@@ -37,9 +37,9 @@ function SideMenu(){
                 <span>Buscar</span>
             </Link>
 
-            <Link to="/emAlta">
+            <Link to="/favoritos">
                 <AiOutlineStar color='#FFF' size={24}/>
-                <span>Em alta</span>
+                <span>Favoritos</span>
             </Link>
 
             <Link to="/chat">
