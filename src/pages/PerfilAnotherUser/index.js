@@ -16,17 +16,16 @@ function PerfilAnotherUser(){
 
     const { user, storageUser } = useContext(AuthContext);
     const [ anotherUser, setAnotherUser ] = useState({});
-    const [ followExists, setFollowExists] = useState(null);
+    const [ favExistsPerfilUser, setFavExistsPerfilUser] = useState(false);
     const [posts, setPosts] = useState([]);
     const [idUnfollow, setIdUnfollow] = useState([]);
 
     const { idUser } = useParams();
 
     useEffect(()=>{
-        buscaAnotherUser();
         verificaFollow();
+        buscaAnotherUser();
         buscaPosts();
-        
     },[])
 
         async function buscaAnotherUser(){
@@ -81,28 +80,39 @@ function PerfilAnotherUser(){
 
         async function verificaFollow(){
 
-            const queryVerificaFollow = await query(collection(db,"follow_followed"),where("user_seguidor" ,"==", storageUser.uid),where("user_seguido" ,"==", idUser))
+            const queryVerificaFollow = await query(collection(db,"favoritou_favoritado"),where("id_favoritou" ,"==", user.uid),where("id_favoritado" ,"==", idUser))
 
-            if(queryVerificaFollow){
-                console.log(true);
-                setFollowExists(true);
-            }else{
-                setFollowExists(false);
-            }
- 
+            const postsRef = onSnapshot(queryVerificaFollow, (snapshot) => {
+                let lista = [];
+        
+                snapshot.forEach((doc) => {
+                    lista.push({
+                    id: doc.id,
+                    favoritou: doc.data().id_favoritou,
+                    favoritado: doc.data().id_favoritado    
+                    });
+                });
+
+                lista.map((valida) => {
+                    if(valida.favoritou === user.uid && valida.favoritado === idUser){
+                        setFavExistsPerfilUser(true);
+                    }
+                })
+                
+            });
         }
 
         
 
 
-    async function follow(){
-        await addDoc(collection(db, 'follow_followed'), {
-            user_seguidor: user.uid,
-            user_seguido: idUser
+    async function favoritar(){
+        await addDoc(collection(db, 'favoritou_favoritado'), {
+            id_favoritou: user.uid,
+            id_favoritado: idUser
         })
         .then(()=>{
-            toast.success('COMEÇOU A SEGUIR!');
-            setFollowExists(true);
+            toast.success('Adicionado aos favoritos!');
+            setFavExistsPerfilUser(true);
         })
         .catch((error)=>{
             console.log("ERRO: "+ error);
@@ -132,7 +142,7 @@ function PerfilAnotherUser(){
                         <div className="row1">
                             <h1>{anotherUser.nome}</h1>
                             <span>@{anotherUser.nomeUser}</span>
-                            {followExists === true ? <button onClick={unfollow}>Seguindo</button> : <button onClick={follow}>Favoritar Perfil</button>}
+                            {favExistsPerfilUser === true ? <button onClick={unfollow}>Favoritado</button> : <button onClick={favoritar}>Favoritar Perfil</button>}
                         </div>
                         <div className="row2">
                             <h2>Posts 0</h2>

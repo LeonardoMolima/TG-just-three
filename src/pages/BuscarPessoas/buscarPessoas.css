@@ -1,0 +1,67 @@
+.container-buscar{
+    margin-top: 1.4em;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 25px;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.input-buscar{
+    width: 500px;
+    border-radius: 0;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    border-left: 2px solid white;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    border-bottom-left-radius: 8px;
+}
+
+.btn-buscar{
+    margin-top: 4px;
+    font-size: 15px;
+    padding-inline: 3px;
+    background-color: #D9CDC1;
+    border-radius: 0;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    border-right: 2px solid white;
+    border-top: 2px solid white;
+    border-bottom: 2px solid white;
+    border-bottom-right-radius: 8px;
+    height: 32px;
+    outline: none;
+}
+
+.btn-buscar:hover{
+   opacity: 0.9;
+   transition: 0.2s;
+}
+
+.container-resultados{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.container-opcoes-pesquisa{
+    margin-top: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.4em;
+}
+
+.btn-opcoes-pesquisa{
+    margin-top: 0;
+    background-color: transparent;
+    padding-inline: 14px;
+}
+
+#btn-pessoas{
+    border-top: 1px solid white;
+    border-radius: 0;
+}

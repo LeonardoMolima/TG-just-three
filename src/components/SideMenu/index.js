@@ -32,12 +32,12 @@ function SideMenu(){
                 <span>Notificações</span>
             </Link>
 
-            <Link to="/paginaBusca">
+            <Link to="/buscar/postagens">
                 <AiOutlineSearch color='#FFF' size={24}/>
                 <span>Buscar</span>
             </Link>
 
-            <Link to="/favoritos">
+            <Link to="/favoritos/postagens">
                 <AiOutlineStar color='#FFF' size={24}/>
                 <span>Favoritos</span>
             </Link>

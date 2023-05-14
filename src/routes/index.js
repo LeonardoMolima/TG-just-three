@@ -7,6 +7,10 @@ import Perfil from '../pages/Perfil';
 import PerfilConfig from '../pages/PerfilConfig';
 import PerfilAnotherUser from '../pages/PerfilAnotherUser';
 import Comentarios from '../pages/Comentarios';
+import Buscar from '../pages/Buscar';
+import BuscarPessoas from '../pages/BuscarPessoas';
+import Favoritos from '../pages/Favoritos';
+import FavoritosPessoas from '../pages/FavoritosPessoas';
 
 import Private from './Private';
 
@@ -21,6 +25,10 @@ function RoutesApp(){
             <Route path='/perfil/config' element={ <Private> <PerfilConfig/> </Private> }/>
             <Route path='/perfilUser/:idUser' element={ <Private> <PerfilAnotherUser/> </Private> }/>
             <Route path='/comentarios/:idPost' element={ <Private> <Comentarios/> </Private> }/>
+            <Route path='/buscar/postagens' element={ <Private> <Buscar/> </Private> }/>
+            <Route path='/buscar/pessoas' element={ <Private> <BuscarPessoas/> </Private> }/>
+            <Route path='/favoritos/postagens' element={ <Private> <Favoritos/> </Private> }/>
+            <Route path='/favoritos/pessoas' element={ <Private> <FavoritosPessoas/> </Private> }/>
         </Routes>
     )
 }
