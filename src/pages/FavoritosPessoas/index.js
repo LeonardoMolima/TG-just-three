@@ -14,59 +14,68 @@ import "./favoritosPessoas.css";
 
 function FavoritosPessoas(){
 
-    const { user, addPost } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [resultados, setResultados] = useState([]);
-    const [ favExistsFavoritosPessoas, setFavExistsFavoritosPessoas] = useState([]);
 
     useEffect(()=>{
-        buscaPosts();
-        verificaFollow();
-    },[])
 
-    async function buscaPosts(){
+        async function buscaPessoas(){
+            const queryVerificaFollow = await query(collection(db,"favoritou_favoritado"),where("id_favoritou" ,"==", user.uid),orderBy("nome","asc"));
+            const queryPessoas  = await query(collection(db,"users"),orderBy("nome","asc"));
+            
+            var listaFavs = [];
+            var cont = 0;
+    
+             onSnapshot(queryVerificaFollow, (snapshot) => {
+        
+                snapshot.forEach((doc) => {
+                    listaFavs.push(doc.data().id_favoritado);
+                });
+            })
 
-        const queryPessoas = await query(collection(db,"users"))
-
-        const postsRef = onSnapshot(queryPessoas, (snapshot) => {
-        let lista = [];
-
-        snapshot.forEach((doc) => {
-            lista.push({
+            console.log(listaFavs);
+           onSnapshot(queryPessoas, (snapshot) => {
+           let lista = [];
+   
+           snapshot.forEach((doc) => {
+               if(doc.id === listaFavs[cont]){
+               lista.push({
                 id: doc.id,
                 nome: doc.data().nome,
                 nomeUser: doc.data().nomeUser,
                 fotoPerfil: doc.data().fotoPerfil,
                 biografia: doc.data().biografia,
                 dataNascimento: doc.data().dataNascimento,
-                genero: doc.data().genero
-            })
-        });
+                genero: doc.data().genero,
+                favoritado:1
+               })
+               cont++;
+               }else{
+                   lista.push({
+                    id: doc.id,
+                    nome: doc.data().nome,
+                    nomeUser: doc.data().nomeUser,
+                    fotoPerfil: doc.data().fotoPerfil,
+                    biografia: doc.data().biografia,
+                    dataNascimento: doc.data().dataNascimento,
+                    genero: doc.data().genero,
+                    favoritado:0
+                       })
+               }
+           });
 
-        setResultados(lista);
+           console.log(lista);
+            setResultados(lista);
+   
+           });
 
-        })
-        
+       }
 
-    }
+        buscaPessoas();
+    },[])
 
-    async function verificaFollow(){
-
-        const queryVerificaFollow = await query(collection(db,"favoritou_favoritado"),where("id_favoritou" ,"==", user.uid))
-
-        const postsRef = onSnapshot(queryVerificaFollow, (snapshot) => {
-            let lista = [];
     
-            snapshot.forEach((doc) => {
-                lista.push(doc.data().id_favoritado);
-            });
 
-            setFavExistsFavoritosPessoas(lista);
-            
-        });
-    }
-
-    let contador = 0;
-    
     return(
         <div>
 
@@ -84,38 +93,41 @@ function FavoritosPessoas(){
 
                 <div className='container-resultados'>
 
-                {
-                resultados.map( (pessoa) => {
-                    if(pessoa.id === favExistsFavoritosPessoas[contador]){
-                        contador++;
-                        return(
-                            <div className="posts-feed">
-                                    <div className="infos-autor-post">
-                                        <div className="img-names">
-                                            {pessoa.fotoPerfil === null ? <img src={avatarPerfil}/> : <img src={pessoa.fotoPerfil}/>}
-                                            <div className="nome-nomeUser">
-                                                <strong>{pessoa.nome}</strong>
-                                                <Link to={"/perfilUser/"+pessoa.id}>@{pessoa.nomeUser}</Link>
+                    {
+                    resultados.map( (pessoa) => {
+                       
+                        if(pessoa.favoritado === 1){
+                            return(
+                                <div className="posts-feed">
+                                        <div className="infos-autor-post">
+                                            <div className="img-names">
+                                                {pessoa.fotoPerfil === null ? <img src={avatarPerfil}/> : <img src={pessoa.fotoPerfil}/>}
+                                                <div className="nome-nomeUser">
+                                                    <strong>{pessoa.nome}</strong>
+                                                    <Link to={"/perfilUser/"+pessoa.id}>@{pessoa.nomeUser}</Link>
+                                                </div>
+                                            </div>
+
+                                            <div className="data-hora-post">
+                                                <span>Gênero: {pessoa.genero}</span>
                                             </div>
                                         </div>
 
-                                        <div className="data-hora-post">
-                                            <span>Gênero: {pessoa.genero}</span>
-                                        </div>
+                                            <div className="conteudo-post">
+                                                <h1></h1>
+                                                <span>{pessoa.biografia}</span><br/>             
+                                            </div>
+                                        
                                     </div>
-
-                                        <div className="conteudo-post">
-                                            <h1></h1>
-                                            <span>{pessoa.biografia}</span><br/>             
-                                        </div>
-                                    
-                                </div>
-                        )
-                    }else{
+                            )
+                        }else{
+                            return(
+                                <></>
+                            )
+                        }
                         
+                    })
                     }
-                })
-                }
             
                 </div>
 

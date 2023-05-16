@@ -105,10 +105,11 @@ function PerfilAnotherUser(){
         
 
 
-    async function favoritar(){
+    async function favoritar(nome){
         await addDoc(collection(db, 'favoritou_favoritado'), {
             id_favoritou: user.uid,
-            id_favoritado: idUser
+            id_favoritado: idUser,
+            nome:nome
         })
         .then(()=>{
             toast.success('Adicionado aos favoritos!');
@@ -142,7 +143,7 @@ function PerfilAnotherUser(){
                         <div className="row1">
                             <h1>{anotherUser.nome}</h1>
                             <span>@{anotherUser.nomeUser}</span>
-                            {favExistsPerfilUser === true ? <button onClick={unfollow}>Favoritado</button> : <button onClick={favoritar}>Favoritar Perfil</button>}
+                            {favExistsPerfilUser === true ? <button onClick={unfollow}>Favoritado</button> : <button onClick={()=>{favoritar(anotherUser.nome)}}>Favoritar Perfil</button>}
                         </div>
                         <div className="row2">
                             <h2>Posts 0</h2>

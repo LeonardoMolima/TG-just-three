@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/auth";
 import { db } from "../../services/FirebaseConnection";
-import { collection, onSnapshot, addDoc } from 'firebase/firestore';
+import { collection, onSnapshot, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { query, orderBy, where } from "firebase/firestore";
 
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
@@ -21,6 +21,7 @@ function Feed(){
     const [conteudoPost, setConteudoPost] = useState('');
     const [imgPost, setImgPost] = useState(null);
     const [imgUrl, setImgUrl] = useState(null);
+    const [verificaFavClick, setFavClick] = useState(null);
     const [favExists, setFavExists] = useState([]);
     const [cont, setCont] = useState(0);
 
@@ -29,12 +30,29 @@ function Feed(){
     useEffect(()=>{
          async function handleBtnBuscaPosts(){
 
+            const queryVerificaFollow = await query(collection(db,"post_favoritou_favoritado"),where("id_user_favoritou" ,"==", user.uid),orderBy("data_Ordem_Post","desc"));
             const q = await query(collection(db,"posts"),orderBy("dataOrdem","desc"))
+            var n = 0;
+            var listaFavoritados = [];
+            var listaIdfavs = [];
 
+            const postsRef =  onSnapshot(queryVerificaFollow, (snapshot) => {
+                
+                snapshot.forEach((doc) => {
+                    listaFavoritados.push(doc.data().id_post_favoritado);
+                });
+                snapshot.forEach((doc) => {
+                    listaIdfavs.push(doc.id);
+                });
+            });
+
+            console.log(listaIdfavs);
+            console.log(listaFavoritados);
             onSnapshot(q, (snapshot) => {
             let lista = [];
     
             snapshot.forEach((doc) => {
+                if(doc.id === listaFavoritados[n]){
                 lista.push({
                 id: doc.id,    
                 titulo: doc.data().titulo,
@@ -46,81 +64,40 @@ function Feed(){
                 id_autor: doc.data().uid_userPost,
                 fotoAutor: doc.data().fotoUserPost,
                 nomeAutor: doc.data().nomeAutor,
-                nomeUserAutor: doc.data().nomeUserAutor
+                nomeUserAutor: doc.data().nomeUserAutor,
+                favoritado: 1,
+                uid_fav:listaIdfavs[n]
                 })
+                n++;
+                }else{
+                    lista.push({
+                        id: doc.id,    
+                        titulo: doc.data().titulo,
+                        tags: doc.data().tags,
+                        conteudo: doc.data().conteudo,
+                        imagem: doc.data().imagem,
+                        data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
+                        hora: doc.data().horaPost,
+                        id_autor: doc.data().uid_userPost,
+                        fotoAutor: doc.data().fotoUserPost,
+                        nomeAutor: doc.data().nomeAutor,
+                        nomeUserAutor: doc.data().nomeUserAutor,
+                        dataOrdem: doc.data().dataOrdem,
+                        favoritado: 0,
+                        uid_fav: null
+                        })
+                }
             });
 
+            console.log(lista);
              setPosts(lista);
     
             });
 
         }
 
-         async function verificaFav(){
-
-            const queryVerificaFollow = await query(collection(db,"post_favoritou_favoritado"),where("id_user_favoritou" ,"==", user.uid))
-        
-            const postsRef =  onSnapshot(queryVerificaFollow, (snapshot) => {
-                let listaFavoritados = [];
-                let listaPostComFlag = [];
-                let n = 0;
-        
-                snapshot.forEach((doc) => {
-                    listaFavoritados.push(doc.data().id_post_favoritado);
-                });
-        
-                console.log(listaFavoritados);
-
-                for(let i = 0 ; i < posts.length ; i++){
-                    
-                    if(posts[i].id == listaFavoritados[n]){
-                        
-                        listaPostComFlag.push({
-                            id: posts[i].id,    
-                            titulo: posts[i].titulo,
-                            tags: posts[i].tags,
-                            conteudo: posts[i].conteudo,
-                            imagem: posts[i].imagem,
-                            data: posts[i].data,
-                            hora: posts[i].hora,
-                            id_autor: posts[i].id_autor,
-                            fotoAutor: posts[i].fotoAutor,
-                            nomeAutor: posts[i].nomeAutor,
-                            nomeUserAutor: posts[i].nomeUserAutor,
-                            flagFav: true
-                            })
-
-                            n = n + 1;
-                    }else{
-
-                        listaPostComFlag.push({
-                            id: posts[i].id,    
-                            titulo: posts[i].titulo,
-                            tags: posts[i].tags,
-                            conteudo: posts[i].conteudo,
-                            imagem: posts[i].imagem,
-                            data: posts[i].data,
-                            hora: posts[i].hora,
-                            id_autor: posts[i].id_autor,
-                            fotoAutor: posts[i].fotoAutor,
-                            nomeAutor: posts[i].nomeAutor,
-                            nomeUserAutor: posts[i].nomeUserAutor,
-                            flagFav: false
-                            })
-                    }
-                    
-                }
-
-                console.log(listaPostComFlag);
-                setFavExists(listaPostComFlag);
-                
-                
-            });
-        }
-
         handleBtnBuscaPosts();
-        verificaFav();
-    },[])
+    },[verificaFavClick])
 
     
 
@@ -158,10 +135,11 @@ function Feed(){
 
    
 
-   async function favoritar(id_post){
+   async function favoritar(id_post, dataOrdem){
     await addDoc(collection(db, 'post_favoritou_favoritado'), {
         id_user_favoritou: user.uid,
-        id_post_favoritado: id_post
+        id_post_favoritado: id_post,
+        data_Ordem_Post: dataOrdem
     })
     .then(()=>{
         toast.success('Adicionado aos favoritos!');
@@ -169,7 +147,32 @@ function Feed(){
     .catch((error)=>{
         console.log("ERRO: "+ error);
     });
-}
+    }
+
+    async function desfavoritar(id_post){
+        const docRef = doc(db,"post_favoritou_favoritado", id_post);
+        await deleteDoc(docRef)
+        .then(()=>{
+            toast.success("Postagem desfavoritada");
+        })
+        .catch((erro)=>{
+            console.log("ERRO: ", erro);
+        })
+    }
+
+    function favClick (opt){
+        if(opt === "favoritou"){
+            setFavClick(opt)
+        }
+        if(opt === "desfavoritou"){
+            setFavClick(opt)
+        }
+        else{
+            return
+        }
+    }
+
+    favClick();
 
     var contador = 0;
 
@@ -247,7 +250,7 @@ function Feed(){
     
                                     <div className='btns-post'>
 
-                                    {favExists[index] === true ? <button><AiFillStar color='#FFF' size={25}/> Favoritado</button>  : <button onClick={()=>{favoritar(post.id)}}><AiOutlineStar color='#FFF' size={25}/> Favoritar</button>}
+                                    {post.favoritado === 1 ? <button onClick={()=>{desfavoritar(post.uid_fav); favClick("desfavoritou");}}><AiFillStar color='#FFF' size={25}/> Favoritado</button>  : <button onClick={()=>{favoritar(post.id,post.dataOrdem); favClick("favoritou");}}><AiOutlineStar color='#FFF' size={25}/> Favoritar</button>}
     
                                        
                                         <Link to={"/comentarios/"+post.id}><button><BsChatText color='#FFF' size={24} />Comentários</button></Link>

@@ -17,59 +17,75 @@ function Favoritos(){
     const [favExistsFavoritos, setFavExistsFavoritos] = useState([]);
 
     const [posts, setPosts] = useState([]);
+    const [verificaFavClick, setFavClick] = useState(null);
 
 
     useEffect(()=>{
         async function handleBtnBuscaPosts(){
 
-            const q = await query(collection(db,"posts"),orderBy("dataOrdem","desc"))
+           const queryVerificaFollow = await query(collection(db,"post_favoritou_favoritado"),where("id_user_favoritou" ,"==", user.uid),orderBy("data_Ordem_Post","desc"));
+           const q = await query(collection(db,"posts"),orderBy("dataOrdem","desc"))
+           var n = 0;
+           var listaFavoritados = [];
 
-            onSnapshot(q, (snapshot) => {
-            let lista = [];
-    
-            snapshot.forEach((doc) => {
-                lista.push({
-                id: doc.id,    
-                titulo: doc.data().titulo,
-                tags: doc.data().tags,
-                conteudo: doc.data().conteudo,
-                imagem: doc.data().imagem,
-                data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
-                hora: doc.data().horaPost,
-                id_autor: doc.data().uid_userPost,
-                fotoAutor: doc.data().fotoUserPost,
-                nomeAutor: doc.data().nomeAutor,
-                nomeUserAutor: doc.data().nomeUserAutor
-                })
-            });
+           const postsRef =  onSnapshot(queryVerificaFollow, (snapshot) => {
+               
+               snapshot.forEach((doc) => {
+                   listaFavoritados.push(doc.data().id_post_favoritado);
+               });
+           });
 
+           console.log(listaFavoritados);
+           onSnapshot(q, (snapshot) => {
+           let lista = [];
+   
+           snapshot.forEach((doc) => {
+               if(doc.id === listaFavoritados[n]){
+               lista.push({
+               id: doc.id,    
+               titulo: doc.data().titulo,
+               tags: doc.data().tags,
+               conteudo: doc.data().conteudo,
+               imagem: doc.data().imagem,
+               data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
+               hora: doc.data().horaPost,
+               id_autor: doc.data().uid_userPost,
+               fotoAutor: doc.data().fotoUserPost,
+               nomeAutor: doc.data().nomeAutor,
+               nomeUserAutor: doc.data().nomeUserAutor,
+               favoritado: 1
+               })
+               n++;
+               }else{
+                   lista.push({
+                       id: doc.id,    
+                       titulo: doc.data().titulo,
+                       tags: doc.data().tags,
+                       conteudo: doc.data().conteudo,
+                       imagem: doc.data().imagem,
+                       data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
+                       hora: doc.data().horaPost,
+                       id_autor: doc.data().uid_userPost,
+                       fotoAutor: doc.data().fotoUserPost,
+                       nomeAutor: doc.data().nomeAutor,
+                       nomeUserAutor: doc.data().nomeUserAutor,
+                       dataOrdem: doc.data().dataOrdem,
+                       favoritado: 0
+                       })
+               }
+           });
+
+           console.log(lista);
             setPosts(lista);
-    
-            });
+   
+           });
 
-        }
+       }
 
-        handleBtnBuscaPosts();
+       handleBtnBuscaPosts();
+   },[])
 
-        async function verificaFollow(){
-
-            const queryVerificaFollow = await query(collection(db,"post_favoritou_favoritado"),where("id_user_favoritou" ,"==", user.uid))
-        
-            const postsRef = onSnapshot(queryVerificaFollow, (snapshot) => {
-                let listaFavoritados = [];
-        
-                snapshot.forEach((doc) => {
-                    listaFavoritados.push(doc.data().id_post_favoritado);
-                });
-        
-                console.log(listaFavoritados);
-                setFavExistsFavoritos(listaFavoritados);
-                
-            });
-        }
-
-        verificaFollow();
-    },[user])
+  
 
     
 
@@ -94,7 +110,7 @@ function Favoritos(){
                     
                     {posts.map( (post) => {
 
-                    if(post.id === favExistsFavoritos[contador]){
+                    if(post.favoritado === 1){
                         contador++;
                         return (
                             <div className="posts-feed">
