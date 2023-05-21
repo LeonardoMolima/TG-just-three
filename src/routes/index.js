@@ -11,6 +11,8 @@ import Buscar from '../pages/Buscar';
 import BuscarPessoas from '../pages/BuscarPessoas';
 import Favoritos from '../pages/Favoritos';
 import FavoritosPessoas from '../pages/FavoritosPessoas';
+import ChatIndex from '../pages/ChatIndex';
+import ChatRoom from '../pages/ChatRoom';
 
 import Private from './Private';
 
@@ -29,6 +31,8 @@ function RoutesApp(){
             <Route path='/buscar/pessoas' element={ <Private> <BuscarPessoas/> </Private> }/>
             <Route path='/favoritos/postagens' element={ <Private> <Favoritos/> </Private> }/>
             <Route path='/favoritos/pessoas' element={ <Private> <FavoritosPessoas/> </Private> }/>
+            <Route path='/chat' element={ <Private> <ChatIndex/> </Private> }/>
+            <Route path='/chat/:idRoom' element={ <Private> <ChatRoom/> </Private> }/>
         </Routes>
     )
 }

@@ -1,5 +1,18 @@
+.div-header{
+    padding-top: 1.4em ;
+    border-top: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.h1-header-feed{
+    font-size: 18px;
+}
+
 .card-add-post{
     margin-top: 1.4em;
+    margin-bottom: 1.4em;
     display: flex;
     justify-content: center;
 }

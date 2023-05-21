@@ -218,6 +218,10 @@ function Feed(){
                     </form>
                 </div>
 
+                <div className='div-header'>
+                    <h1 className="h1-header-feed">Veja o que está acontecendo no mundo da programação...</h1>
+                </div>
+
                 <div className="card-posts-feed">
                     
                 {posts.map((post, index) => {
