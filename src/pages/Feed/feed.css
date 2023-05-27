@@ -232,3 +232,28 @@
         margin-top: 50px;
     }
 }
+
+@media screen and (max-width: 450px){
+    .area-post{
+        width: 380px;    
+        margin-left: 3px;
+    }
+    .inputs-post{
+        width: 300px;
+    }
+    .inputs-post input{
+        width: 246px;
+    }
+    .inputs-post textarea{
+        min-width: 300px;
+    }
+
+    .posts-feed{
+        width: 380px;    
+        margin-left: 3px;
+    }  
+    .conteudo-post img {
+        max-height: 200px;
+    }
+}
+
