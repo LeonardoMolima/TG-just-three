@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
-import { Link, useParams } from 'react-router-dom';
-import { query, collection, onSnapshot, where, orderBy, addDoc } from "firebase/firestore";
+import { Link, useParams, useNavigate } from 'react-router-dom';
+import { query, collection, onSnapshot, where, orderBy, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../services/FirebaseConnection";
 import { AuthContext } from '../../contexts/auth';
 
@@ -64,6 +64,9 @@ function ChatRoom (){
                     foto_UserJoin: doc.data().foto_UserJoin,
                     nome_UserJoin: doc.data().nome_UserJoin,
                     nomeUser_UserJoin: doc.data().nomeUser_UserJoin,
+                    foto_UserStart: doc.data().foto_UserStart,
+                    nome_UserStart: doc.data().nome_UserStart,
+                    nomeUser_UserStart: doc.data().nomeUser_UserStart,
                     dataCriacao: doc.data().dataCriacao
                 })
             });
@@ -139,6 +142,16 @@ function ChatRoom (){
 
     }
 
+    async function deleteChatRoom(idChatRoom){
+        const docRef = doc(db, "chatRooms", idChatRoom);
+
+        await deleteDoc(docRef)
+        .then(()=>{
+            toast.success("ChatRoom deletado!");
+        })
+
+    }
+
     async function buscaMessages(){
 
         const queryMessages = await query(collection(db,"messages"), where("idRoom", "==", idRoom), orderBy("dataEnvio", "asc"));
@@ -171,7 +184,6 @@ function ChatRoom (){
 
                 <div className="container-chats">
                     <div className="rooms">
-                        <h1>Rooms</h1>
                         <div className="container-busca-pessoa">
                             <input type="text" className="input-buscar-pessoa-chat" placeholder="Buscar..." value={pesquisa} onChange={(e)=>{setPesquisa(e.target.value)}}/>
                             <button className="btn-buscar-pessoa-chat" ><AiOutlineSearch size={24} color="#fff" /></button>
@@ -211,9 +223,11 @@ function ChatRoom (){
                         </div>
 
                         <div className="cards-pessoas-chat">
-                            {
+                        {
                                 chatRooms.map((room)=>{
+
                                     return(
+                                        room.idUserStartChat === user.uid ?
                                         <div className="card-pessoa-chat">
                                                     <div className="infos-pessoa-chat">
                                                         <div className="img-pessoa-chat">
@@ -229,7 +243,24 @@ function ChatRoom (){
                                                             <Link to={"/chat/"+room.id}><button className="btn-open-chat"><BsFillArrowRightCircleFill size={24} color="#FFF"/></button></Link>
                                                         </div>
                                                     </div>
-                                            </div>
+                                            </div> 
+                                            :
+                                            <div className="card-pessoa-chat">
+                                                    <div className="infos-pessoa-chat">
+                                                        <div className="img-pessoa-chat">
+                                                            {room.foto_UserStart === null ? <img src={avatarPerfil}/> : <img src={room.foto_UserStart}/>}
+                                                            <div className="nome-nomeUser-pessoa-chat">
+                                                                <strong>{room.nome_UserStart}</strong>
+                                                                <Link to={"/perfilUser/"+room.idUserStartChat}>@{room.nomeUser_UserStart}</Link>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div className="div-btn-open-chat">
+                                                            <Link onClick={()=>{deleteChatRoom(room.id)}} to={"/chat"}><button className="btn-open-chat"><BsFillXCircleFill size={24} color="#FFF"/></button></Link>
+                                                            <Link to={"/chat/"+room.id}><button className="btn-open-chat"><BsFillArrowRightCircleFill size={24} color="#FFF"/></button></Link>
+                                                        </div>
+                                                    </div>
+                                            </div> 
                                     )
                                 })
                             }
@@ -237,7 +268,18 @@ function ChatRoom (){
                     </div>
 
                     <div className="message">
-                        <h1>Message</h1>
+                        <div className="header-chatRoom">
+                            {
+                                chatRooms.map((room)=>{
+                                    if(room.id === idRoom){
+                                    return(
+                                        <div className="img-header-chatRoom">
+                                        </div>
+                                    )}
+                                })
+                            }
+
+                        </div>
                             <div className="container-message">
                                 {
                                     roomMessages.map((mensagem)=>{

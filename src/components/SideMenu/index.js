@@ -27,11 +27,6 @@ function SideMenu(){
                 <span>Página inicial</span>
             </Link>
 
-            <Link>
-                <AiOutlineBell color='#FFF' size={24}/>
-                <span>Notificações</span>
-            </Link>
-
             <Link to="/buscar/postagens">
                 <AiOutlineSearch color='#FFF' size={24}/>
                 <span>Buscar</span>

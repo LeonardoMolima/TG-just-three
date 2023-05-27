@@ -2,7 +2,7 @@ import SideMenu from "../../components/SideMenu";
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../contexts/auth';
-import { doc, getDoc, query, collection, where, orderBy, onSnapshot, addDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, query, collection, where, orderBy, onSnapshot, addDoc, deleteDoc, getCountFromServer } from "firebase/firestore";
 import { db } from "../../services/FirebaseConnection";
 
 import { toast } from "react-toastify";
@@ -19,12 +19,15 @@ function PerfilAnotherUser(){
     const [ favExistsPerfilUser, setFavExistsPerfilUser] = useState(false);
     const [posts, setPosts] = useState([]);
     const [idUnfollow, setIdUnfollow] = useState([]);
+    const [countPosts, setCountPosts] = useState(0);
+    const [countFavs, setCountFavs] = useState(0);
 
     const { idUser } = useParams();
 
     useEffect(()=>{
         verificaFollow();
         buscaAnotherUser();
+        contaPostsFavs();
         buscaPosts();
     },[])
 
@@ -130,6 +133,24 @@ function PerfilAnotherUser(){
         return <Navigate to='/perfil'/>
     }
 
+    async function contaPostsFavs(){
+
+        const q = await query(collection(db,"posts"),where("uid_userPost" ,"==", idUser));
+        const snapshot = await getCountFromServer(q);
+
+        setCountPosts(snapshot.data().count);
+
+        const q2 = await query(collection(db,"favoritou_favoritado"),where("id_favoritou" ,"==", idUser));
+        const snapshot2 = await getCountFromServer(q2);
+
+        const q3 = await query(collection(db,"post_favoritou_favoritado"),where("id_user_favoritou" ,"==", idUser));
+        const snapshot3 = await getCountFromServer(q3);
+
+        const somaFavs = (snapshot2.data().count) + (snapshot3.data().count);
+        
+        setCountFavs(somaFavs);
+    }
+
     return(
         <div>
             <SideMenu/>
@@ -146,8 +167,8 @@ function PerfilAnotherUser(){
                             {favExistsPerfilUser === true ? <button onClick={unfollow}>Favoritado</button> : <button onClick={()=>{favoritar(anotherUser.nome)}}>Favoritar Perfil</button>}
                         </div>
                         <div className="row2">
-                            <h2>Posts 0</h2>
-                            <h2>Favoritos 0</h2>
+                            <h2>Posts {countPosts}</h2>
+                            <h2>Favoritou {countFavs}</h2>
                         </div>
                         <div className="row3">
                             <h2 className="bio">{anotherUser.biografia === null ? "" : anotherUser.biografia}</h2>

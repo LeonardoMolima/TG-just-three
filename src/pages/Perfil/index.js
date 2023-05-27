@@ -8,7 +8,7 @@ import { AuthContext } from '../../contexts/auth';
 import { AiOutlineStar } from 'react-icons/ai';
 import { BsChatText } from 'react-icons/bs';
 import { db } from "../../services/FirebaseConnection";
-import { collection, query, orderBy, where, onSnapshot } from "firebase/firestore";
+import { collection, query, orderBy, where, onSnapshot, getCountFromServer } from "firebase/firestore";
 
 import avatarPerfil from '../../assets/img/avatar.png';
 import './perfil.css';
@@ -19,6 +19,9 @@ function Perfil(){
     const { user } = useContext(AuthContext);
 
     const [posts, setPosts] = useState([]);
+
+    const [countPosts, setCountPosts] = useState(0);
+    const [countFavs, setCountFavs] = useState(0);
 
     useEffect(()=>{
         async function handleBtnBuscaPosts(){
@@ -53,7 +56,24 @@ function Perfil(){
         }
 
         handleBtnBuscaPosts();
+        contaPostsFavs();
     },[])
+
+    async function contaPostsFavs(){
+
+        const q = await query(collection(db,"posts"),where("uid_userPost" ,"==", user.uid));
+        const snapshot = await getCountFromServer(q);
+
+        const q2 = await query(collection(db,"favoritou_favoritado"),where("id_favoritou" ,"==", user.uid));
+        const snapshot2 = await getCountFromServer(q2);
+
+        const q3 = await query(collection(db,"post_favoritou_favoritado"),where("id_user_favoritou" ,"==", user.uid));
+        const snapshot3 = await getCountFromServer(q3);
+
+        const somaFavs = (snapshot2.data().count) + (snapshot3.data().count);
+        setCountPosts(snapshot.data().count);
+        setCountFavs(somaFavs);
+    }
 
     return(
         <div>
@@ -73,8 +93,8 @@ function Perfil(){
                             </Link>
                         </div>
                         <div className="row2">
-                            <h2>Posts 0</h2>
-                            <h2>Favoritos 0</h2>
+                            <h2>Posts {countPosts}</h2>
+                            <h2>Favoritou {countFavs}</h2>
                         </div>
                         <div className="row3">
                             <h2 className="bio">{user.biografia === null ? "" : user.biografia}</h2>

@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { Link } from 'react-router-dom';
-import { query, collection, onSnapshot, where, orderBy, addDoc } from "firebase/firestore";
+import { query, collection, onSnapshot, where, orderBy, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../services/FirebaseConnection";
 import { AuthContext } from '../../contexts/auth';
 
@@ -21,13 +21,15 @@ function ChatIndex (){
     const [ newMessage, setNewMessages ] = useState("");
     const [resultados, setResultados] = useState([]);
 
+    const [verificaRemoveClick, setRemoveClick] = useState(null);
+
     useEffect(()=>{
         buscaPosts();
-    },[pesquisa])
+    },[pesquisa]);
 
     useEffect(()=>{
         buscaChatRooms();
-    },[])
+    },[verificaRemoveClick]);
 
     async function buscaChatRooms(){
 
@@ -61,6 +63,9 @@ function ChatIndex (){
                     foto_UserJoin: doc.data().foto_UserJoin,
                     nome_UserJoin: doc.data().nome_UserJoin,
                     nomeUser_UserJoin: doc.data().nomeUser_UserJoin,
+                    foto_UserStart: doc.data().foto_UserStart,
+                    nome_UserStart: doc.data().nome_UserStart,
+                    nomeUser_UserStart: doc.data().nomeUser_UserStart,
                     dataCriacao: doc.data().dataCriacao
                 })
             });
@@ -71,6 +76,28 @@ function ChatIndex (){
         setChatRooms(lista);
     }
 
+    async function removeChatRoom(idChatRoom){
+        const docRef = doc(db, "chatRooms", idChatRoom);
+        await deleteDoc(docRef)
+        .then(()=>{
+            toast.success('Chat Room Deletado!');
+        });
+    }
+
+    function optClick (opt){
+        if(opt === "adicionou"){
+            setRemoveClick(opt);
+        }
+        if(opt === "removeu"){
+            setRemoveClick(opt);
+        }
+        else{
+            return
+        }
+    }
+
+    optClick();
+
     async function addChatRoom(idUserPesquisa, fotoUserJoin, nome, nomeUser){
 
         await addDoc(collection(db, 'chatRooms'), {
@@ -79,9 +106,13 @@ function ChatIndex (){
             foto_UserJoin: fotoUserJoin,
             nome_UserJoin: nome,
             nomeUser_UserJoin: nomeUser,
+            foto_UserStart: user.fotoPerfil,
+            nome_UserStart: user.nome,
+            nomeUser_UserStart: user.nomeUser,
             dataCriacao: Date.now()
         })
         .then(()=>{
+            optClick("adicionou");
             toast.success('Sala Criada!');
         })
         .catch((error)=>{
@@ -127,7 +158,6 @@ function ChatIndex (){
 
                 <div className="container-chats">
                     <div className="rooms">
-                        <h1>Rooms</h1>
                         <div className="container-busca-pessoa">
                             <input type="text" className="input-buscar-pessoa-chat" placeholder="Buscar..." value={pesquisa} onChange={(e)=>{setPesquisa(e.target.value)}}/>
                             <button className="btn-buscar-pessoa-chat" ><AiOutlineSearch size={24} color="#fff" /></button>
@@ -151,7 +181,7 @@ function ChatIndex (){
                                                             
                                                         </div>
                                                         <div className="div-btn-open-chat">
-                                                            <button className="btn-open-chat" onClick={()=>{addChatRoom(pessoa.id, pessoa.fotoPerfil, pessoa.nome, pessoa.nomeUser)}}><BsFillPlusCircleFill size={24} color="#FFF"/></button>
+                                                            <button className="btn-open-chat" onClick={()=>{addChatRoom(pessoa.id, pessoa.fotoPerfil, pessoa.nome, pessoa.nomeUser);}}><BsFillPlusCircleFill size={24} color="#FFF"/></button>
                                                         </div>
                                                     </div>
                                             </div>
@@ -169,7 +199,9 @@ function ChatIndex (){
                         <div className="cards-pessoas-chat">
                             {
                                 chatRooms.map((room)=>{
+
                                     return(
+                                        room.idUserStartChat === user.uid ?
                                         <div className="card-pessoa-chat">
                                                     <div className="infos-pessoa-chat">
                                                         <div className="img-pessoa-chat">
@@ -181,11 +213,28 @@ function ChatIndex (){
                                                             
                                                         </div>
                                                         <div className="div-btn-open-chat">
-                                                            <Link><button className="btn-open-chat"><BsFillXCircleFill size={24} color="#FFF"/></button></Link>
+                                                            <Link onClick={()=>{removeChatRoom(room.id); optClick("removeu");}}><button className="btn-open-chat"><BsFillXCircleFill size={24} color="#FFF"/></button></Link>
                                                             <Link to={"/chat/"+room.id}><button className="btn-open-chat"><BsFillArrowRightCircleFill size={24} color="#FFF"/></button></Link>
                                                         </div>
                                                     </div>
-                                            </div>
+                                            </div> 
+                                            :
+                                            <div className="card-pessoa-chat">
+                                                    <div className="infos-pessoa-chat">
+                                                        <div className="img-pessoa-chat">
+                                                            {room.foto_UserStart === null ? <img src={avatarPerfil}/> : <img src={room.foto_UserStart}/>}
+                                                            <div className="nome-nomeUser-pessoa-chat">
+                                                                <strong>{room.nome_UserStart}</strong>
+                                                                <Link to={"/perfilUser/"+room.idUserStartChat}>@{room.nomeUser_UserStart}</Link>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                        <div className="div-btn-open-chat">
+                                                            <Link onClick={()=>{removeChatRoom(room.id); optClick("removeu");}}><button className="btn-open-chat"><BsFillXCircleFill size={24} color="#FFF"/></button></Link>
+                                                            <Link to={"/chat/"+room.id}><button className="btn-open-chat"><BsFillArrowRightCircleFill size={24} color="#FFF"/></button></Link>
+                                                        </div>
+                                                    </div>
+                                            </div> 
                                     )
                                 })
                             }
@@ -193,7 +242,6 @@ function ChatIndex (){
                     </div>
 
                     <div className="message">
-                        <h1>Message</h1>
                     </div>
                 </div>
 
