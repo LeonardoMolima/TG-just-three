@@ -65,3 +65,16 @@
     border-top: 1px solid white;
     border-radius: 0;
 }
+
+@media screen and (max-width: 700px){
+    .container-buscar{
+        margin-top: 80px;
+    }
+    
+}
+
+@media screen and (max-width: 373px){
+    .content{
+       width: 370px;
+    }
+}

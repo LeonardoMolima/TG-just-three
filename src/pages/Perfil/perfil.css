@@ -70,10 +70,12 @@
 
 .row1 span{
     font-size: 16px;
+    word-break: normal;
 }
 
 .card-info h1{
     font-weight: bold;
+    word-break: normal;
 }
 .card-info h2{
     font-weight: normal;
@@ -111,13 +113,24 @@
     margin-inline:1.0em;
 }
 
+@media screen and (max-width: 863px){
+        h1{
+            font-size: 18px;
+        }
+        .row1 span{
+            font-size-adjust: 14px;
+            font-size: 14px;
+        }
+}  
 
 @media screen and (max-width: 700px){
     .card-foto,.card-info{
         margin-top: 18px;
         margin-bottom: -15px;
     }  
-
+    h1{
+            font-size: 18px;
+        }
 }
 
 @media screen and (max-width: 540px){
@@ -134,4 +147,20 @@
     h2{
         font-size: 12px;
     }
+}
+
+@media screen and (max-width: 375px){
+    .card-perfil h2{
+        margin-left: 25px;   
+        margin-right: 40px;
+    }
+
+    .posts-feed{
+        width: 360px;
+    }
+
+    .data-hora-post{
+        margin-right: -13px;
+    }
+
 }

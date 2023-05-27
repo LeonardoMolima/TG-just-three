@@ -114,6 +114,20 @@
 
 .card-info button{
     background-color: #0094FF;
-    width: 140px;
+    width: 100px;
     margin: 0;
 }
+@media screen and (max-width: 863px){
+    .row1 span{
+        font-size-adjust: 14px;
+        font-size: 14px;
+        margin-right: 5px;
+    }
+
+}  
+@media screen and (max-width: 700px){
+    .card-info h1,h2{
+        margin-left: 5px;        
+    }
+
+}  

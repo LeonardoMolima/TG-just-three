@@ -2,6 +2,7 @@
     display: flex;
     border-radius: 5px;
     padding: 0.8em;
+    justify-content: center;
     align-items: center;
     margin-bottom: 1.0em;
 }
@@ -70,4 +71,10 @@
 .form-profile button{
     margin-top: 1em;
     background-color: #0094FF;
+}
+
+@media screen and (max-width: 700px){
+    .container{
+        margin-top: 10%;
+    }
 }
