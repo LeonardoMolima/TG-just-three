@@ -21,6 +21,8 @@ function ChatRoom (){
     const [ chatRooms, setChatRooms ] = useState([]);
     const [ newMessage, setNewMessage ] = useState("");
     const [resultados, setResultados] = useState([]);
+    const [verificaRemoveClick, setRemoveClick] = useState(null);
+
     const { idRoom } = useParams();
 
     useEffect(()=>{
@@ -29,14 +31,18 @@ function ChatRoom (){
 
     useEffect(()=>{
         buscaChatRooms();
+    },[verificaRemoveClick]);
+
+    useEffect(()=>{
+        buscaChatRooms();
         buscaMessages();
-    },[])
+    },[verificaRemoveClick]);
 
     async function buscaChatRooms(){
 
         let lista = [];
         const queryPessoas = await query(collection(db,"chatRooms"),where("idUserStartChat", "==", user.uid));
-        const queryPessoas2 = await query(collection(db,"chatRooms"),where("idUserJoinChat", "==", user.uid));
+        
         const postsRef = onSnapshot(queryPessoas, (snapshot) => {
     
             snapshot.forEach((doc) => {
@@ -53,6 +59,8 @@ function ChatRoom (){
 
             
         });
+
+        const queryPessoas2 = await query(collection(db,"chatRooms"),where("idUserJoinChat", "==", user.uid));
 
         const postsRef2 = onSnapshot(queryPessoas2, (snapshot) => {
     
@@ -88,11 +96,33 @@ function ChatRoom (){
             dataCriacao: Date.now()
         })
         .then(()=>{
+            setPesquisa('');
+            optClick("adicionou");
             toast.success('Sala Criada!');
         })
         .catch((error)=>{
             console.log("ERRO: "+ error);
         });
+    }
+
+    async function removeChatRoom(idChatRoom){
+        const docRef = doc(db, "chatRooms", idChatRoom);
+        await deleteDoc(docRef)
+        .then(()=>{
+            toast.success('Chat Room Deletado!');
+        });
+    }
+
+    function optClick (opt){
+        if(opt === "adicionou"){
+            setRemoveClick(opt);
+        }
+        if(opt === "removeu"){
+            setRemoveClick(opt);
+        }
+        else{
+            return
+        }
     }
 
     //++++++++++
@@ -239,7 +269,7 @@ function ChatRoom (){
                                                             
                                                         </div>
                                                         <div className="div-btn-open-chat">
-                                                            <Link><button className="btn-open-chat"><BsFillXCircleFill size={24} color="#FFF"/></button></Link>
+                                                            <Link onClick={()=>{removeChatRoom(room.id); optClick("removeu");}}><button className="btn-open-chat"><BsFillXCircleFill size={24} color="#FFF"/></button></Link>
                                                             <Link to={"/chat/"+room.id}><button className="btn-open-chat"><BsFillArrowRightCircleFill size={24} color="#FFF"/></button></Link>
                                                         </div>
                                                     </div>
@@ -256,7 +286,7 @@ function ChatRoom (){
                                                             
                                                         </div>
                                                         <div className="div-btn-open-chat">
-                                                            <Link onClick={()=>{deleteChatRoom(room.id)}} to={"/chat"}><button className="btn-open-chat"><BsFillXCircleFill size={24} color="#FFF"/></button></Link>
+                                                            <Link onClick={()=>{removeChatRoom(room.id); optClick("removeu");}}><button className="btn-open-chat"><BsFillXCircleFill size={24} color="#FFF"/></button></Link>
                                                             <Link to={"/chat/"+room.id}><button className="btn-open-chat"><BsFillArrowRightCircleFill size={24} color="#FFF"/></button></Link>
                                                         </div>
                                                     </div>

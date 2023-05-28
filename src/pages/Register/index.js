@@ -12,15 +12,15 @@ function Register(){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [genero, setGenero] = useState('');
-    const [dataNascimento, setDataNascimento] = useState('');
+    const [nvlProgramacao, setNvlProgramacao] = useState('');
 
     const { addUser, loadingAuth } = useContext(AuthContext);
 
     async function handleSubmit(e){
         e.preventDefault();
 
-        if(nome !== '' && nomeUser !== '' && email !== '' && password !== '' && genero !== '' && dataNascimento !== ''){
-            await addUser(nome, nomeUser, email, password, genero, dataNascimento);
+        if(nome !== '' && nomeUser !== '' && email !== '' && password !== '' && genero !== '' && nvlProgramacao !== ''){
+            await addUser(nome, nomeUser, email, password, genero, nvlProgramacao);
         }else{
             toast.error("Todos os campos precisam estar preenchidos.");
         }
@@ -51,8 +51,15 @@ function Register(){
                         <option value={'outro'}>Outro</option>
                     </select>
                     <br/>
-                    <h4>Data de Nascimento</h4>
-                    <input type="date" onChange={(e)=>{ setDataNascimento(e.target.value)}}/>
+                    <h4>Nível na Programação</h4>
+                    <select name="nvlProgramacao" onChange={(e)=>{ setNvlProgramacao(e.target.value)}}>
+                        <option value="" disabled selected>Selecione...</option>
+                        <option value={'Iniciante'}>Iniciante</option>
+                        <option value={'Estagiário'}>Estagiário</option>
+                        <option value={'Junior'}>Junior</option>
+                        <option value={'Pleno'}>Pleno</option>
+                        <option value={'Sênior'}>Sênior</option>
+                    </select>
                     <br/>
                     <input type="submit" value={loadingAuth ? 'Carregando...' : 'Cadastrar'} className='btn-entrar'/>
                     <br/>

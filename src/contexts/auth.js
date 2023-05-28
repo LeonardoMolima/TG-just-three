@@ -73,7 +73,7 @@ function AuthProvider({ children }){
                 email: value.user.email,
                 biografia: docSnap.data().biografia,
                 genero: docSnap.data().genero,
-                dataNascimento: docSnap.data().dataNascimento,
+                nvlProgramacao: docSnap.data().nvlProgramacao,
                 fotoPerfil: docSnap.data().fotoPerfil
                 }
 
@@ -90,7 +90,7 @@ function AuthProvider({ children }){
         })
     }
 
-   async function addUser(nome, nomeUser, email, password, genero, dataNascimento){
+   async function addUser(nome, nomeUser, email, password, genero, nvlProgramacao){
         setLoadingAuth(true);
 
         await createUserWithEmailAndPassword(auth, email, password)
@@ -102,7 +102,7 @@ function AuthProvider({ children }){
                 nomeUser: nomeUser,
                 biografia:null,
                 genero: genero,
-                dataNascimento: dataNascimento,
+                nvlProgramacao: nvlProgramacao,
                 fotoPerfil: null,
             })
             .then( () => {
@@ -114,7 +114,7 @@ function AuthProvider({ children }){
                 email: value.user.email,
                 biografia:null,
                 genero: genero,
-                dataNascimento: dataNascimento,
+                nvlProgramacao: nvlProgramacao,
                 fotoPerfil: null,
                 }
 

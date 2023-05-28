@@ -22,6 +22,7 @@ function PerfilConfig(){
     const [ nomeUser, setNomeUser] = useState(user && user.nomeUser);
     const [ email, setEmail] = useState(user && user.email);
     const [ biografia, setBiografia] = useState(user && user.biografia);
+    const [ nvlProgramacao, setNvlProgramacao] = useState(user && user.nvlProgramacao);
 
     function handleFile(e){
         if(e.target.files[0]){
@@ -90,6 +91,26 @@ function PerfilConfig(){
                 toast.success("Dados atualizados!");
 
             });
+        }if( nvlProgramacao !== null && fotoPerfil !== null){
+            //lógica para mudar o nome e a biografia
+            const docRef = doc(db, 'users', user.uid);
+            await updateDoc(docRef, {
+                nome:nome,
+                biografia: biografia,
+                nvlProgramacao:nvlProgramacao,
+            })
+            .then( () => {
+                let data = {
+                    ...user,
+                    nome:nome,
+                    biografia: biografia,
+                    nvlProgramacao:nvlProgramacao,
+                }
+
+                handleUploadFoto();
+                setUser(data);
+                storageUser(data);
+            });
         }else if(fotoPerfil === null && nome === user.nome && biografia !== ''){
             //logica para alterar somente a biografia
             const docRef = doc(db, 'users', user.uid);
@@ -124,7 +145,7 @@ function PerfilConfig(){
                 storageUser(data);
                 toast.success("Dados atualizados!");
             });
-        }else if(fotoPerfil !== null && nome !== '' && biografia !== ''){
+        } else if(fotoPerfil !== null && nome !== '' && biografia !== ''){
             //função para alteracao de foto
             handleUploadFoto();
         }
@@ -165,6 +186,16 @@ function PerfilConfig(){
 
                         <label>Biografia</label>
                         <textarea maxlength="155" cols="20" rows="1" value={biografia === null ? "Minha biografia..." : biografia} onChange={(e) => setBiografia(e.target.value)}></textarea>
+
+                        <label>Nível na Programação</label>
+                        <select name="nvlProgramacao" onChange={(e)=>{ setNvlProgramacao(e.target.value)}}>
+                            <option value="null" disabled selected>{nvlProgramacao}</option>
+                            <option value={'Iniciante'}>Iniciante</option>
+                            <option value={'Estagiário'}>Estagiário</option>
+                            <option value={'Junior'}>Junior</option>
+                            <option value={'Pleno'}>Pleno</option>
+                            <option value={'Sênior'}>Sênior</option>
+                        </select>
                         
                         <button type="submit">Salvar alterações</button>
                     </form>

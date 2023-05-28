@@ -21,15 +21,25 @@ function PerfilAnotherUser(){
     const [idUnfollow, setIdUnfollow] = useState([]);
     const [countPosts, setCountPosts] = useState(0);
     const [countFavs, setCountFavs] = useState(0);
+    const [verificaRemoveClick, setRemoveClick] = useState(null);
 
     const { idUser } = useParams();
 
     useEffect(()=>{
+        optClick("default");
         verificaFollow();
         buscaAnotherUser();
         contaPostsFavs();
         buscaPosts();
     },[])
+
+    useEffect(()=>{
+        verificaFollow();
+    },[verificaRemoveClick])
+
+        function refreshPage(){ 
+            window.location.reload(); 
+        }
 
         async function buscaAnotherUser(){
 
@@ -98,6 +108,7 @@ function PerfilAnotherUser(){
 
                 lista.map((valida) => {
                     if(valida.favoritou === user.uid && valida.favoritado === idUser){
+                        setIdUnfollow(valida.id);
                         setFavExistsPerfilUser(true);
                     }
                 })
@@ -124,8 +135,30 @@ function PerfilAnotherUser(){
     }
 
     async function unfollow(){
-        console.log("teste");
+        const docRef = doc(db, "favoritou_favoritado", idUnfollow);
+        await deleteDoc(docRef)
+        .then(()=>{
+            setRemoveClick("removeu");
+            toast.success('Perfil Desfavoritado!');
+        });
     }
+
+    function optClick (opt){
+        if(opt === "adicionou"){
+            setRemoveClick(opt);
+        }
+        if(opt === "removeu"){
+            setRemoveClick(opt);
+        }
+        if(opt === "default"){
+            setRemoveClick(opt);
+        }
+        else{
+            return
+        }
+    }
+
+    optClick();
 
     
             
@@ -164,7 +197,7 @@ function PerfilAnotherUser(){
                         <div className="row1">
                             <h1>{anotherUser.nome}</h1>
                             <span>@{anotherUser.nomeUser}</span>
-                            {favExistsPerfilUser === true ? <button onClick={unfollow}>Favoritado</button> : <button onClick={()=>{favoritar(anotherUser.nome)}}>Favoritar Perfil</button>}
+                            {favExistsPerfilUser === true ? <button onClick={()=>{unfollow(); optClick("removeu"); refreshPage();}}>Favoritado</button> : <button onClick={()=>{favoritar(anotherUser.nome)}}>Favoritar</button>}
                         </div>
                         <div className="row2">
                             <h2>Posts {countPosts}</h2>

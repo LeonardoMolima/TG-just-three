@@ -24,18 +24,22 @@ function ChatIndex (){
     const [verificaRemoveClick, setRemoveClick] = useState(null);
 
     useEffect(()=>{
-        buscaPosts();
-    },[pesquisa]);
-
+        optClick("default");
+    });
+    
     useEffect(()=>{
         buscaChatRooms();
     },[verificaRemoveClick]);
+
+    useEffect(()=>{
+        buscaPosts();
+    },[pesquisa]);
 
     async function buscaChatRooms(){
 
         let lista = [];
         const queryPessoas = await query(collection(db,"chatRooms"),where("idUserStartChat", "==", user.uid));
-        const queryPessoas2 = await query(collection(db,"chatRooms"),where("idUserJoinChat", "==", user.uid));
+        
         const postsRef = onSnapshot(queryPessoas, (snapshot) => {
     
             snapshot.forEach((doc) => {
@@ -52,6 +56,8 @@ function ChatIndex (){
 
             
         });
+
+        const queryPessoas2 = await query(collection(db,"chatRooms"),where("idUserJoinChat", "==", user.uid));
 
         const postsRef2 = onSnapshot(queryPessoas2, (snapshot) => {
     
@@ -91,6 +97,9 @@ function ChatIndex (){
         if(opt === "removeu"){
             setRemoveClick(opt);
         }
+        if(opt === "default"){
+            setRemoveClick(opt);
+        }
         else{
             return
         }
@@ -112,6 +121,7 @@ function ChatIndex (){
             dataCriacao: Date.now()
         })
         .then(()=>{
+            setPesquisa('');
             optClick("adicionou");
             toast.success('Sala Criada!');
         })
