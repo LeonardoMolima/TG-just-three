@@ -89,11 +89,13 @@
 
 .nome-nomeUser-pessoa-chat a{
     opacity: 0.6;
+    white-space: nowrap;
 }
 
 .nome-nomeUser-pessoa-chat strong{
     color: white;
     font-weight: 400;
+    white-space: nowrap;
 }
 
 .infos-pessoa-chat{
@@ -116,4 +118,135 @@
     display: flex;
     align-items: center;
     border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+@media screen and (max-width:1280px) {
+    .div-btn-open-chat svg{
+        max-width: 20px;
+    }
+}
+@media screen and (max-width:1240px) {
+    .div-btn-open-chat{
+        max-height: 60px;
+    }
+    .rooms{
+        width: 40%;
+    }
+    .message{
+        width: 60%;
+    }
+    .img-pessoa-chat{
+        width: 80%;
+    }
+    .img-pessoa-chat strong{
+        font-size: 14px;
+    }
+    .img-pessoa-chat a{
+        font-size: 12px;
+    }
+    .img-pessoa-chat img{ 
+        max-width: 40px;
+        max-height: 40px;
+    }
+}
+
+@media screen and (max-width:950px) {
+    .div-btn-open-chat{
+        max-height: 57px;
+    }
+    .rooms{
+        width: 50%;
+    }
+    .message{
+        width: 50%;
+    }
+    .img-pessoa-chat img{ 
+        max-width: 30px;
+        max-height: 30px;
+    }
+    .btn-enviar-msg{
+        font-size:10px;
+    }
+}
+
+@media screen and (max-width:700px) {
+    .container-chats{
+        margin-top: 75px;
+        padding: 6;
+    }
+    .msg-user-right label{
+        font-size: 14px;
+    }
+    .msg-user-left label{
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width:540px) {
+    .container-chats{
+        margin-top: 75px;
+    }
+    .container-busca-pessoa input{
+        width: 60%;
+    }
+    .rooms{
+        width: 100%;
+    }
+    .message{
+        display: none;
+    }
+}
+
+@media screen and (max-width:475px) {
+    .img-pessoa-chat strong{
+        font-size: 12px;
+    }
+    .img-pessoa-chat a{
+        font-size: 10px;
+    }
+    .div-btn-open-chat{
+        max-height: 54px;
+    }
+    .div-btn-open-chat svg{
+        max-width: 17px;
+    }
+}
+
+@media screen and (max-width:450px) {
+    .infos-pessoa-chat{
+        margin-left: -6px;
+    }
+    .img-pessoa-chat strong{
+        font-size: 10px;
+    }
+    .img-pessoa-chat a{
+        font-size: 8px;
+    }
+    .div-btn-open-chat{
+        max-height: 51px;
+    }
+    .msg-user-right label{
+        font-size: 12px;
+    }
+    .msg-user-left label{
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .infos-pessoa-chat{
+        margin-left: -8px;
+    }
+    .img-pessoa-chat strong{
+        font-size: 8px;
+    }
+    .img-pessoa-chat a{
+        font-size: 6px;
+    }
+    .msg-user-right label{
+        font-size: 10px;
+    }
+    .msg-user-left label{
+        font-size: 10px;
+    }
 }

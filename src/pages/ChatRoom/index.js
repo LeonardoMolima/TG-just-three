@@ -213,7 +213,7 @@ function ChatRoom (){
             <div className="content">
 
                 <div className="container-chats">
-                    <div className="rooms">
+                    <div className="rooms-ChatRoom">
                         <div className="container-busca-pessoa">
                             <input type="text" className="input-buscar-pessoa-chat" placeholder="Buscar..." value={pesquisa} onChange={(e)=>{setPesquisa(e.target.value)}}/>
                             <button className="btn-buscar-pessoa-chat" ><AiOutlineSearch size={24} color="#fff" /></button>
@@ -297,7 +297,7 @@ function ChatRoom (){
                         </div>
                     </div>
 
-                    <div className="message">
+                    <div className="message-ChatRoom">
                         <div className="header-chatRoom">
                             {
                                 chatRooms.map((room)=>{

@@ -267,6 +267,11 @@
     }  
     .conteudo-post img {
         max-height: 200px;
+        max-width: 200px;
+    }
+    .post img{
+        width: 40px;
+        height: 40px;
     }
 }
 

@@ -100,27 +100,43 @@
     }
 
 }
+@media screen and (max-width: 525px){
+    .sideBar{
+        width: 525px;
+    }
+}
+@media screen and (max-width: 500px){
+    .sideBar{
+        width: 500px;
+    }
+}
+@media screen and (max-width: 475px){
+    .sideBar{
+        width: 480px;
+    }
+}
 @media screen and (max-width: 450px){
     .sideBar{
         width: 450px;
     }
-
+}
+@media screen and (max-width: 425px){
+    .sideBar{
+        width: 425px;
+    }
 }
 @media screen and (max-width: 400px){
     .sideBar{
         width: 400px;
     }
-
     .sideBar a{
         margin-left: -5px;
         margin-right: -5px;
     }
-
 }
 
 @media screen and (max-width: 375px){
     .sideBar{
         max-width: 375px;
     }
-
 }
