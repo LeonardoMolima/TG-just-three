@@ -1,6 +1,6 @@
 import SideMenu from "../../components/SideMenu";
 import {AiOutlineSearch} from "react-icons/ai";
-import { AiOutlineStar } from 'react-icons/ai';
+import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
 import { BsChatText } from 'react-icons/bs';
 import avatarPerfil from '../../assets/img/avatar.png';
 
@@ -9,13 +9,17 @@ import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../contexts/auth';
 import { doc, getDoc, query, collection, where, orderBy, onSnapshot, addDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../../services/FirebaseConnection";
+import { toast } from "react-toastify";
 
 import "./buscar.css";
 
 function Buscar(){
 
+    const { user } = useContext(AuthContext);
+
     const [pesquisa, setPesquisa] = useState('');
     const [resultados, setResultados] = useState([]);
+    const [verificaFavClick, setFavClick] = useState(null);
 
     useEffect(()=>{
         buscaPosts();
@@ -23,26 +27,64 @@ function Buscar(){
 
     async function buscaPosts(){
 
-        const queryPosts = await query(collection(db,"posts"),orderBy("dataOrdem","desc"))
+        const queryVerificaFollow = await query(collection(db,"post_favoritou_favoritado"),where("id_user_favoritou" ,"==", user.uid),orderBy("data_Ordem_Post","desc"));
+            const q = await query(collection(db,"posts"),orderBy("dataOrdem","desc"))
+            var n = 0;
+            var listaFavoritados = [];
+            var listaIdfavs = [];
 
-        const postsRef = onSnapshot(queryPosts, (snapshot) => {
-        let lista = [];
+            const postsRef =  onSnapshot(queryVerificaFollow, (snapshot) => {
+                
+                snapshot.forEach((doc) => {
+                    listaFavoritados.push(doc.data().id_post_favoritado);
+                });
+                snapshot.forEach((doc) => {
+                    listaIdfavs.push(doc.id);
+                });
+            });
 
-        snapshot.forEach((doc) => {
-            lista.push({
-            id: doc.id,    
-            titulo: doc.data().titulo,
-            tags: doc.data().tags,
-            conteudo: doc.data().conteudo,
-            imagem: doc.data().imagem,
-            data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
-            hora: doc.data().horaPost,
-            id_autor: doc.data().uid_userPost,
-            fotoAutor: doc.data().fotoUserPost,
-            nomeAutor: doc.data().nomeAutor,
-            nomeUserAutor: doc.data().nomeUserAutor
-            })
-        });
+            console.log(listaIdfavs);
+            console.log(listaFavoritados);
+            onSnapshot(q, (snapshot) => {
+            let lista = [];
+    
+            snapshot.forEach((doc) => {
+                if(doc.id === listaFavoritados[n]){
+                lista.push({
+                id: doc.id,    
+                titulo: doc.data().titulo,
+                tags: doc.data().tags,
+                conteudo: doc.data().conteudo,
+                imagem: doc.data().imagem,
+                data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
+                hora: doc.data().horaPost,
+                id_autor: doc.data().uid_userPost,
+                fotoAutor: doc.data().fotoUserPost,
+                nomeAutor: doc.data().nomeAutor,
+                nomeUserAutor: doc.data().nomeUserAutor,
+                favoritado: 1,
+                uid_fav:listaIdfavs[n]
+                })
+                n++;
+                }else{
+                    lista.push({
+                        id: doc.id,    
+                        titulo: doc.data().titulo,
+                        tags: doc.data().tags,
+                        conteudo: doc.data().conteudo,
+                        imagem: doc.data().imagem,
+                        data: doc.data().diaPost+'/'+doc.data().mesPost+'/'+doc.data().anoPost,
+                        hora: doc.data().horaPost,
+                        id_autor: doc.data().uid_userPost,
+                        fotoAutor: doc.data().fotoUserPost,
+                        nomeAutor: doc.data().nomeAutor,
+                        nomeUserAutor: doc.data().nomeUserAutor,
+                        dataOrdem: doc.data().dataOrdem,
+                        favoritado: 0,
+                        uid_fav: null
+                        })
+                }
+            });
 
         setResultados(lista);
         console.log("POSTS LISTA: ",lista);
@@ -51,6 +93,45 @@ function Buscar(){
         
 
     }
+
+    async function favoritar(id_post, dataOrdem){
+        await addDoc(collection(db, 'post_favoritou_favoritado'), {
+            id_user_favoritou: user.uid,
+            id_post_favoritado: id_post,
+            data_Ordem_Post: dataOrdem
+        })
+        .then(()=>{
+            toast.success('Adicionado aos favoritos!');
+        })
+        .catch((error)=>{
+            console.log("ERRO: "+ error);
+        });
+        }
+    
+        async function desfavoritar(id_post){
+            const docRef = doc(db,"post_favoritou_favoritado", id_post);
+            await deleteDoc(docRef)
+            .then(()=>{
+                toast.success("Postagem desfavoritada");
+            })
+            .catch((erro)=>{
+                console.log("ERRO: ", erro);
+            })
+        }
+    
+        function favClick (opt){
+            if(opt === "favoritou"){
+                setFavClick(opt)
+            }
+            if(opt === "desfavoritou"){
+                setFavClick(opt)
+            }
+            else{
+                return
+            }
+        }
+    
+        favClick();
 
     return(
         <div>
@@ -102,7 +183,7 @@ function Buscar(){
                                     </div>
 
                                     <div className='btns-post'>
-                                        <button><AiOutlineStar color='#FFF' size={25}/> Favoritar</button>
+                                    {post.favoritado === 1 ? <button onClick={()=>{desfavoritar(post.uid_fav); favClick("desfavoritou");}}><AiFillStar color='#FFF' size={25}/> Favoritado</button>  : <button onClick={()=>{favoritar(post.id,post.dataOrdem); favClick("favoritou");}}><AiOutlineStar color='#FFF' size={25}/> Favoritar</button>}
                                         <Link to={"/comentarios/"+post.id}><button><BsChatText color='#FFF' size={24} />Comentários</button></Link>
                                     </div>
                                 </div>

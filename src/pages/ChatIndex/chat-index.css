@@ -2,26 +2,20 @@
     margin-top: 1.4em;
     width: 100%;
     height: 90vh;
-    border: 1px solid rgba(255,255,255,0.2);
-    border-radius: 8px;
     display: flex;
-    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
 }
 
 .rooms{
     padding-block: 5px;
-    border-right: 1px solid rgba(255,255,255,0.2);
-    width: 30%;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
-}
-
-.message{
-    padding: 5px;
-    width: 70%;
-    display: flex;
-    flex-direction: column;
+    overflow-y:scroll;
 }
 
 .container-busca-pessoa{
@@ -238,10 +232,10 @@
         margin-left: -8px;
     }
     .img-pessoa-chat strong{
-        font-size: 8px;
+        font-size: 10px;
     }
     .img-pessoa-chat a{
-        font-size: 6px;
+        font-size: 10px;
     }
     .msg-user-right label{
         font-size: 10px;

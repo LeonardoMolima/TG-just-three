@@ -137,7 +137,6 @@ function Perfil(){
                                 </div>
 
                                 <div className='btns-post'>
-                                    <button><AiOutlineStar color='#FFF' size={25}/> Favoritar</button>
                                     <Link to={"/comentarios/"+post.id}><button><BsChatText color='#FFF' size={24} />Comentários</button></Link>
                                 </div>
                             </div>
