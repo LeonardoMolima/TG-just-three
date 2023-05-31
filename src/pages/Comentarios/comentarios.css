@@ -54,6 +54,7 @@
     margin-top: 1.0em;
     display: flex;
     justify-content: center;
+    width: fit-content;
 }
 
 .add-comentario form{
@@ -71,4 +72,94 @@
     margin-top: 1.0em;
     background-color: #0094FF;
     width: 100px;
+}
+
+@media screen and (max-width: 830px){
+    .add-comentario{
+        width: 100%;
+    }
+    .add-comentario form{
+        width: 500px;
+    }
+    .add-comentario textarea{
+        min-width: 400px;
+    }
+
+}
+
+@media screen and (max-width: 700px){
+    .posts-feed{
+        margin-top: 75px;
+    }
+}
+
+@media screen and (max-width: 500px){
+    .add-comentario textarea{
+        min-width: 375px;
+    }
+    .add-comentario form button{
+        margin-left: -10px;
+    }
+    .add-comentario img{
+        width: 40px;
+        height: 40px;
+    }
+    .add-comentario form{
+        width: 480px;
+        margin-left: 5px;
+    }
+    .nome-nomeUser strong{
+        font-size: 14px;
+    }
+    .nome-nomeUser a{
+        font-size: 12px;
+    }
+    .data-hora-post span{
+        font-size: 12px;
+    }
+    .conteudo-post h1{
+        font-size: 16px;
+        }
+    .conteudo-post h2{
+        font-size: 18px;
+        }
+}
+
+@media screen and (max-width: 475px){
+    .add-comentario form{
+        width: 435px;
+    }
+    .add-comentario textarea{
+        min-width: 300px;
+    }
+}
+
+@media screen and (max-width: 450px){
+    .add-comentario form{
+        width: 380px;
+    }
+}
+
+@media screen and (max-width: 400px){
+    .add-comentario form{
+        width: 370px;
+    }
+    .add-comentario textarea{
+        min-width: 270px;
+    }
+}
+
+@media screen and (max-width: 375px){
+    .add-comentario form{
+        width: 340px;
+    }
+    .add-comentario textarea{
+        min-width: 250px;
+    }
+}
+
+@media screen and (max-width: 350px){
+    .add-comentario form{
+        width: 330px;
+    }
 }
