@@ -5,7 +5,7 @@ import { db } from "../../services/FirebaseConnection";
 import { AuthContext } from '../../contexts/auth';
 
 import SideMenu from "../../components/SideMenu";
-import { AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineSearch, AiOutlineArrowLeft } from "react-icons/ai";
 import { BsFillPlusCircleFill, BsFillArrowRightCircleFill, BsFillXCircleFill } from "react-icons/bs";
 import avatarPerfil from '../../assets/img/avatar.png';
 import './chat-room.css';
@@ -212,7 +212,7 @@ function ChatRoom (){
 
             <div className="content">
 
-                <div className="container-chats">
+                <div className="container-chats-chatRoom">
                     <div className="rooms-ChatRoom">
                         <div className="container-busca-pessoa">
                             <input type="text" className="input-buscar-pessoa-chat" placeholder="Buscar..." value={pesquisa} onChange={(e)=>{setPesquisa(e.target.value)}}/>
@@ -301,9 +301,17 @@ function ChatRoom (){
                         <div className="header-chatRoom">
                             {
                                 chatRooms.map((room)=>{
-                                    if(room.id === idRoom){
+                                    if(room.id === idRoom ){
                                     return(
-                                        <div className="img-header-chatRoom">
+                                        <div className="infos-header-chatRoom">
+                                            {room.idUserJoinChat === user.uid ? 
+                                            <><Link to={"/chat"}><button className="btn-open-chat"><AiOutlineArrowLeft size={24} color="#FFF"/></button></Link>
+                                            <img className="img-header-chatRoom" src={room.foto_UserStart} />
+                                            <span className="nome-header-chatRoom">{room.nome_UserStart}</span></>
+                                            : 
+                                            <><Link to={"/chat"}><button className="btn-open-chat"><AiOutlineArrowLeft size={24} color="#FFF"/></button></Link>
+                                            <img className="img-header-chatRoom" src={room.foto_UserJoin}/>
+                                            <span className="nome-header-chatRoom">{room.nome_UserJoin}</span></>}
                                         </div>
                                     )}
                                 })
@@ -340,6 +348,7 @@ function ChatRoom (){
                                 <button className="btn-enviar-msg" onClick={sendMessage}>Enviar</button>
                             </div>
                     </div>
+    
                 </div>
 
             </div>

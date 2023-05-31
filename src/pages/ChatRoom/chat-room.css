@@ -1,8 +1,8 @@
-.container-chats{
+.container-chats-chatRoom{
     margin-top: 1.4em;
     width: 100%;
     height: 90vh;
-    border: 1px solid rgba(255,255,255,0.2);
+    border: transparent;
     border-radius: 8px;
     display: flex;
     justify-content: space-around;
@@ -12,7 +12,7 @@
     padding-block: 5px;
     border-right: 1px solid rgba(255,255,255,0.2);
     width: 30%;
-    display: flex;
+    display: none;
     flex-direction: column;
     overflow-y: scroll;
 }
@@ -22,6 +22,8 @@
     width: 70%;
     display: flex;
     flex-direction: column;
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
 }
 
 .container-busca-pessoa{
@@ -178,6 +180,38 @@
     
 }
 
+.header-chatRoom{
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.2);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.infos-header-chatRoom{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.nome-header-chatRoom{
+    color: white;
+    font-size: 18px;
+    margin-inline: 5px;
+}
+
+.infos-header-chatRoom img{
+   max-width: 50px;
+   max-height: 50px;
+   min-width: 50px;
+   min-height: 50px;
+   border-radius: 50%;
+}
+
+.infos-header-chatRoom button{
+    margin-left: 5px;
+ }
+
 @media screen and (max-width:1280px) {
     .div-btn-open-chat svg{
         max-width: 20px;
@@ -226,6 +260,10 @@
     .btn-enviar-msg{
         font-size:10px;
     }
+
+    .message-ChatRoom{
+        width: 100%;
+    }
 }
 
 @media screen and (max-width:700px) {
@@ -238,6 +276,14 @@
     }
     .msg-user-left label{
         font-size: 14px;
+    }
+
+    .message-ChatRoom{
+        width: 100%;
+    }
+
+    .header-chatRoom{
+       margin-top: 40px;
     }
 }
 
