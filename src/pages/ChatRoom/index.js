@@ -409,6 +409,14 @@ function ChatRoom (){
                                             <div className="msg-left">
                                                 <div className="msg-user-left">
                                                     <label className="msg">{mensagem.message}</label>
+
+                                                    {mensagem.flg_code === 1 ? <div className="code-field-msg"><Editor
+                                                        height="200px"
+                                                        defaultLanguage={mensagem.prog_language}
+                                                        theme='vs-dark'
+                                                        value={mensagem.code}
+                                                        /> </div> : <></>}
+                                                        
                                                 </div>
                                             </div>
                                         )
