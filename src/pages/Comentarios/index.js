@@ -6,6 +6,9 @@ import { collection, getDoc, onSnapshot, where, doc } from 'firebase/firestore';
 import { query, orderBy } from "firebase/firestore";
 import SideMenu from "../../components/SideMenu";
 
+//Monaco
+import Editor from '@monaco-editor/react';
+
 import avatarPerfil from '../../assets/img/avatar.png';
 import './comentarios.css';
 
@@ -44,7 +47,10 @@ function Comentarios(){
                     id_autor: doc.data().uid_userPost,
                     fotoAutor: doc.data().fotoUserPost,
                     nomeAutor: doc.data().nomeAutor,
-                    nomeUserAutor: doc.data().nomeUserAutor
+                    nomeUserAutor: doc.data().nomeUserAutor,
+                    flg_code: doc.data().flg_code,
+                    code: doc.data().code,
+                    prog_language: doc.data().prog_language,
                     });
 
                     setPost(lista);
@@ -126,6 +132,12 @@ function Comentarios(){
                                     <h2>{post.conteudo}</h2><br/>
                                     <div className="img-conteudo-post">
                                     {post.imagem === null ? <></> : <img src={post.imagem} alt="Foto Postagem"/>}
+                                    {post.flg_code === 1 ? <Editor
+                                                        height="200px"
+                                                        defaultLanguage={post.prog_language}
+                                                        theme='vs-dark'
+                                                        value={post.code}
+                                                        /> : <></>}
                                     </div>
                                 </div>
                             </div>

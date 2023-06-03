@@ -5,6 +5,8 @@ import { db } from "../../services/FirebaseConnection";
 import { collection, onSnapshot } from 'firebase/firestore';
 import { query, orderBy, where } from "firebase/firestore";
 
+import Editor from '@monaco-editor/react';
+
 import SideMenu from "../../components/SideMenu";
 import {  AiFillStar } from 'react-icons/ai';
 import { BsChatText } from 'react-icons/bs';
@@ -53,6 +55,10 @@ function Favoritos(){
                fotoAutor: doc.data().fotoUserPost,
                nomeAutor: doc.data().nomeAutor,
                nomeUserAutor: doc.data().nomeUserAutor,
+               dataOrdem: doc.data().dataOrdem,
+               flg_code: doc.data().flg_code,
+               code: doc.data().code,
+               prog_language: doc.data().prog_language,
                favoritado: 1
                })
                n++;
@@ -70,6 +76,9 @@ function Favoritos(){
                        nomeAutor: doc.data().nomeAutor,
                        nomeUserAutor: doc.data().nomeUserAutor,
                        dataOrdem: doc.data().dataOrdem,
+                       flg_code: doc.data().flg_code,
+                       code: doc.data().code,
+                       prog_language: doc.data().prog_language,
                        favoritado: 0
                        })
                }
@@ -135,6 +144,12 @@ function Favoritos(){
                                     <h2>{post.conteudo}</h2><br/>
                                     <div className="img-conteudo-post">
                                     {post.imagem === null ? <></> : <img src={post.imagem} alt="Foto Postagem"/>}
+                                    {post.flg_code === 1 ? <Editor
+                                                        height="200px"
+                                                        defaultLanguage={post.prog_language}
+                                                        theme='vs-dark'
+                                                        value={post.code}
+                                                        /> : <></>}
                                     </div>
                                 </div>
 

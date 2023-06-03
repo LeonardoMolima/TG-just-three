@@ -4,6 +4,8 @@ import { VscSettingsGear }  from 'react-icons/vsc';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../contexts/auth';
 
+//Monaco
+import Editor from '@monaco-editor/react';
 
 import { AiOutlineStar } from 'react-icons/ai';
 import { BsChatText } from 'react-icons/bs';
@@ -43,7 +45,10 @@ function Perfil(){
                 id_autor: doc.data().uid_userPost,
                 fotoAutor: doc.data().fotoUserPost,
                 nomeAutor: doc.data().nomeAutor,
-                nomeUserAutor: doc.data().nomeUserAutor
+                nomeUserAutor: doc.data().nomeUserAutor,
+                flg_code: doc.data().flg_code,
+                code: doc.data().code,
+                prog_language: doc.data().prog_language
                 })
             });
 
@@ -104,7 +109,6 @@ function Perfil(){
 
                 <div className="card-btn-menus">
                     <button className="btn-menu-posts">Posts</button>
-                    <button className="btn-menu-sobre">Sobre</button>
                 </div>
 
                 <div className="card-posts-feed">
@@ -133,6 +137,12 @@ function Perfil(){
                                     <h2>{post.conteudo}</h2><br/>
                                     <div className="img-conteudo-post">
                                     {post.imagem === null ? <></> : <img src={post.imagem}/>}
+                                    {post.flg_code === 1 ? <Editor
+                                                        height="200px"
+                                                        defaultLanguage={post.prog_language}
+                                                        theme='vs-dark'
+                                                        value={post.code}
+                                                        /> : <></>}
                                     </div>
                                 </div>
 

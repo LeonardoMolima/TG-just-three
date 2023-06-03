@@ -113,7 +113,7 @@
 .btn-open-chat{
     height: 63px;
     background-color: transparent;
-    margin-right: 15px;
+    margin-right: 15px
 }
 
 .div-btn-open-chat{
@@ -123,8 +123,32 @@
 }
 
 .container-message{
+    overflow-y: scroll;
     padding: 30px;
-    height: 75vh;
+    padding-bottom: 100px;
+    height: 70vh;
+    margin-bottom: 0;
+    scroll-padding-bottom: -10 !important;
+}
+
+.container-message::-webkit-scrollbar-track
+{
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+	background-color: #F5F5F5;
+}
+
+.container-message::-webkit-scrollbar
+{
+	width: 12px;
+	background-color: #F5F5F5;
+}
+
+.container-message::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #555;
 }
 
 .container-btn-send{
@@ -138,9 +162,19 @@
 }
 
 .btn-enviar-msg{
-    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px  !important;
+    height: 35px !important;
+    border-radius: 50% !important;
     margin-left: 20px;
     background-color: #968e85;
+}
+
+.btn-enviar-msg:hover{
+    transition: 0.6s;
+    background-color: #0094FF;
 }
 
 .msg-right{
@@ -212,10 +246,47 @@
     margin-left: 5px;
  }
 
+ .btn-img-msg {
+    margin-left: 6px;
+ }
+
+ .btn-code-msg:hover{
+    cursor: pointer;
+ }
+
+ .btn-code-msg {
+    margin-left: 6px;
+ }
+
+ .input-code-field{
+    padding-inline: 30px;
+    width: 100% !important;
+ }
+
+ .opts-code-field{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+ }
+
+ .btn-cancel-code:hover{
+    cursor: pointer;
+ }
+
+ .code-field-msg{
+    margin-top: 10px;
+    width: 500px !important;
+ }
+
 @media screen and (max-width:1280px) {
     .div-btn-open-chat svg{
         max-width: 20px;
     }
+
+    .code-field-msg{
+        width: 500px !important;
+     }
 }
 
 @media screen and (max-width:1240px) {
@@ -241,6 +312,9 @@
         max-width: 40px;
         max-height: 40px;
     }
+    .code-field-msg{
+        width: 500px !important;
+     }
 }
 
 @media screen and (max-width:950px) {
@@ -264,6 +338,10 @@
     .message-ChatRoom{
         width: 100%;
     }
+
+    .code-field-msg{
+        width: 350px !important;
+     }
 }
 
 @media screen and (max-width:700px) {
@@ -285,6 +363,10 @@
     .header-chatRoom{
        margin-top: 40px;
     }
+
+    .code-field-msg{
+        width: 350px !important;
+     }
 }
 
 @media screen and (max-width:540px) {
@@ -297,6 +379,10 @@
     .message-ChatRoom{
         width: 100%;
     }
+
+    .code-field-msg{
+        width: 250px !important;
+     }
 }
 
 @media screen and (max-width:475px) {

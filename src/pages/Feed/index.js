@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/auth";
@@ -5,9 +6,12 @@ import { db } from "../../services/FirebaseConnection";
 import { collection, onSnapshot, addDoc, deleteDoc, doc } from 'firebase/firestore';
 import { query, orderBy, where } from "firebase/firestore";
 
+//Monaco
+import Editor from '@monaco-editor/react';
+
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
-import { BsChatText } from 'react-icons/bs';
-import { BsCardImage } from 'react-icons/bs';
+import { BsChatText, BsCardImage } from 'react-icons/bs';
+import { BiCodeBlock } from 'react-icons/bi';
 import avatarPerfil from '../../assets/img/avatar.png';
 import SideMenu from "../../components/SideMenu";
 import './feed.css';
@@ -24,8 +28,31 @@ function Feed(){
     const [verificaFavClick, setFavClick] = useState(null);
     const [favExists, setFavExists] = useState([]);
     const [cont, setCont] = useState(0);
+    const [code, setCode] = useState('');
+    const [codeFieldIOpt, setCodeFieldIOpt] = useState(false);
+    const [language, setLanguage] = useState('');
+    const [languageMonaco, setLanguageMonaco] = useState('');
 
     const [posts, setPosts] = useState([]);
+
+    function printaCode(){
+        console.log(code);
+        setCode('');
+        setCodeFieldIOpt(false);
+    }
+
+        function setProgLanguage(language){
+            let data = {
+                language:language,
+            }
+
+            localStorage.setItem('@languageForm', JSON.stringify(data));
+        }
+
+    useEffect(()=>{
+        
+        setLanguageMonaco(language);
+    },[])
 
     useEffect(()=>{
          async function handleBtnBuscaPosts(){
@@ -65,6 +92,9 @@ function Feed(){
                 fotoAutor: doc.data().fotoUserPost,
                 nomeAutor: doc.data().nomeAutor,
                 nomeUserAutor: doc.data().nomeUserAutor,
+                flg_code: doc.data().flg_code,
+                code: doc.data().code,
+                prog_language: doc.data().prog_language,
                 favoritado: 1,
                 uid_fav:listaIdfavs[n]
                 })
@@ -83,6 +113,9 @@ function Feed(){
                         nomeAutor: doc.data().nomeAutor,
                         nomeUserAutor: doc.data().nomeUserAutor,
                         dataOrdem: doc.data().dataOrdem,
+                        flg_code: doc.data().flg_code,
+                        code: doc.data().code,
+                        prog_language: doc.data().prog_language,
                         favoritado: 0,
                         uid_fav: null
                         })
@@ -124,8 +157,13 @@ function Feed(){
    async function handleSubmit(e){
         e.preventDefault();
 
-       await addPost(tituloPost, tagsPost, conteudoPost, imgPost);
-
+    if(code != '' && code != "'//Cole seu código aqui...'"){
+        await addPost(tituloPost, tagsPost, conteudoPost, imgPost, 1, code, language);
+    }else{
+       await addPost(tituloPost, tagsPost, conteudoPost, imgPost, 0, null, null);
+    }
+       setCode('//Cole seu código aqui...');
+       setCodeFieldIOpt(false);
        setTituloPost('');
        setTagsPost('');
        setConteudoPost('');
@@ -174,8 +212,6 @@ function Feed(){
 
     favClick();
 
-    var contador = 0;
-
     return(
         
         <div>
@@ -193,11 +229,86 @@ function Feed(){
                                 <div className="inputs-post">
                                 <div>
                                     <label>Titulo:</label>
-                                    <input type="text" placeholder="Titulo da postagem..." value={tituloPost} onChange={(e)=>{setTituloPost(e.target.value)}}/>
+                                    <input type="text" placeholder="Titulo da postagem..." value={tituloPost} onChange={(e)=>{setTituloPost(e.target.value)}} required/>
                                     <label>Tags:</label>
-                                    <input type="text" placeholder="Tags da postagem..." value={tagsPost} onChange={(e)=>{setTagsPost(e.target.value)}}/>
+                                    <input type="text" placeholder="Tags da postagem..." value={tagsPost} onChange={(e)=>{setTagsPost(e.target.value)}} required/>
                                 </div>
-                                <textarea maxlength="155" cols="20" rows="1" placeholder="Digite sua postagem..." value={conteudoPost} onChange={(e)=>{setConteudoPost(e.target.value)}}></textarea>
+                                
+                                <textarea maxlength="155" cols="20" rows="1" placeholder="Digite sua postagem..." value={conteudoPost} onChange={(e)=>{setConteudoPost(e.target.value)}}required></textarea>
+                                
+                                {
+                                codeFieldIOpt === true ?
+                                <div><select onChange={(e) => { setLanguage(e.target.value); } } className="select-code-language" required>
+                                                <option value="" disabled="" hidden="" selected="">Selecione a linguagem...</option>
+                                                <option value="plaintext">plaintext</option>
+                                                <option value="abap">abap</option>
+                                                <option value="apex">apex</option>
+                                                <option value="azcli">azcli</option>
+                                                <option value="bat">bat</option>
+                                                <option value="bicep">bicep</option>
+                                                <option value="cameligo">cameligo</option>
+                                                <option value="clojure">clojure</option>
+                                                <option value="coffeescript">coffeescript</option>
+                                                <option value="c">c</option>
+                                                <option value="cpp">cpp</option>
+                                                <option value="csharp">csharp</option>
+                                                <option value="csp">csp</option>
+                                                <option value="css">css</option>
+                                                <option value="cypher">cypher</option>
+                                                <option value="dart">dart</option>
+                                                <option value="dockerfile">dockerfile</option>
+                                                <option value="ecl">ecl</option>
+                                                <option value="elixir">elixir</option>
+                                                <option value="flow9">flow9</option>
+                                                <option value="fsharp">fsharp</option>
+                                                <option value="go">go</option>
+                                                <option value="graphql">graphql</option>
+                                                <option value="handlebars">handlebars</option>
+                                                <option value="hcl">hcl</option>
+                                                <option value="html">html</option>
+                                                <option value="ini">ini</option>
+                                                <option value="java">java</option>
+                                                <option value="javascript">javascript</option>
+                                                <option value="julia">julia</option>
+                                                <option value="kotlin">kotlin</option>
+                                                <option value="less">less</option>
+                                                <option value="lexon">lexon</option>
+                                                <option value="lua">lua</option>
+                                                <option value="liquid">liquid</option>
+                                                <option value="m3">m3</option>
+                                                <option value="markdown">markdown</option>
+                                                <option value="mips">mips</option>
+                                                <option value="msdax">msdax</option>
+                                                <option value="mysql">mysql</option>
+                                                <option value="objective">objective-c</option>
+                                                <option value="pascal">pascal</option>
+                                                <option value="pascaligo">pascaligo</option>
+                                                <option value="perl">perl</option>
+                                                <option value="pgsql">pgsql</option>
+                                                <option value="php">php</option>
+                                                <option value="pla">pla</option>
+                                                <option value="postiats">postiats</option>
+                                                <option value="powerquery">powerquery</option>
+                                                <option value="powershell">powershell</option>
+                                                <option value="proto">proto</option>
+                                                <option value="pug">pug</option>
+                                                <option value="python">python</option>
+                                                <option value="qsharp">qsharp</option>
+                                                <option value="r">r</option>
+                                                <option value="razor">razor</option>
+                                                <option value="redis">redis</option>
+                                                <option value="redshift">redshift</option>
+                                            </select><div className='code-field'>
+                                                    <Editor
+                                                        height="200px"
+                                                        defaultLanguage={`plaintext`}
+                                                        theme='vs-dark'
+                                                        defaultValue='//Cole seu código aqui...'
+                                                        value={code}
+                                                        onChange={(e)=>{setCode(e)}}/>;
+                                                </div></div>: <></> } 
+                    
+
                                 </div>
                             </div>
                             <div className="options-add-post" >
@@ -206,7 +317,10 @@ function Feed(){
                                 ) : (
                                     <img src={imgUrl} alt="Foto de Post"/>
                                 )}
-                                <label className="label-add-post">
+                               <label className='btn-code-field' onClick={()=>{setCodeFieldIOpt(true);}}>
+                                    <BiCodeBlock color="#FFF" size={25}/>
+                                </label> 
+                                <label className="label-add-post">     
                                     <span>
                                         <BsCardImage color="#FFF" size={25}/>
                                     </span>
@@ -249,6 +363,12 @@ function Feed(){
                                         <h2>{post.conteudo}</h2><br/>
                                         <div className="img-conteudo-post">
                                         {post.imagem === null ? <></> : <img src={post.imagem} alt="Foto Postagem"/>}
+                                        {post.flg_code === 1 ? <Editor
+                                                        height="200px"
+                                                        defaultLanguage={post.prog_language}
+                                                        theme='vs-dark'
+                                                        value={post.code}
+                                                        /> : <></>}
                                         </div>
                                     </div>
     
