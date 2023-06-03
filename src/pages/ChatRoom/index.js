@@ -4,9 +4,15 @@ import { query, collection, onSnapshot, where, orderBy, addDoc, deleteDoc, doc }
 import { db } from "../../services/FirebaseConnection";
 import { AuthContext } from '../../contexts/auth';
 
+//Monaco
+import Editor from '@monaco-editor/react';
+
 import SideMenu from "../../components/SideMenu";
 import { AiOutlineSearch, AiOutlineArrowLeft } from "react-icons/ai";
 import { BsFillPlusCircleFill, BsFillArrowRightCircleFill, BsFillXCircleFill } from "react-icons/bs";
+import { BsChatText, BsCardImage, BsSendFill } from 'react-icons/bs';
+import { MdCancel } from 'react-icons/md';
+import { BiCodeBlock } from 'react-icons/bi';
 import avatarPerfil from '../../assets/img/avatar.png';
 import './chat-room.css';
 import { toast } from "react-toastify";
@@ -22,21 +28,33 @@ function ChatRoom (){
     const [ newMessage, setNewMessage ] = useState("");
     const [resultados, setResultados] = useState([]);
     const [verificaRemoveClick, setRemoveClick] = useState(null);
+    const [code, setCode] = useState('');
+    const [codeFieldIOpt, setCodeFieldIOpt] = useState(false);
+    const [language, setLanguage] = useState('');
 
     const { idRoom } = useParams();
 
     useEffect(()=>{
-        buscaPosts();
-    },[pesquisa])
-
-    useEffect(()=>{
-        buscaChatRooms();
-    },[verificaRemoveClick]);
+        buscaMessages();
+        setTimeout(()=>{const containerMessage = document.querySelector('.container-message');
+        let altura = containerMessage.scrollHeight;
+        console.log(altura);
+        containerMessage.scrollTo(0, altura);},100);
+        
+    },[]);
 
     useEffect(()=>{
         buscaChatRooms();
         buscaMessages();
     },[verificaRemoveClick]);
+    
+     function keyPress (event) {
+        // Verifica se a tecla pressionada é a tecla Enter (código 13)
+        if (event.keyCode === 13) {
+          // Chama o método submit() no formulário
+          sendMessage();
+        }
+    };
 
     async function buscaChatRooms(){
 
@@ -156,19 +174,57 @@ function ChatRoom (){
 
     async function sendMessage(){
 
-        await addDoc(collection(db, 'messages'), {
-            idRoom: idRoom,
-            id_autor: user.uid,
-            message: newMessage,
-            dataEnvio: Date.now()
-        })
-        .then(()=>{
-            console.log("Enviou!");
-            setNewMessage('');
-        })
-        .catch((error)=>{
-            console.log("ERRO: "+ error);
-        });
+        if(newMessage === '' || newMessage === null){
+            toast.error("Escreva uma mensagem!");
+            return
+        }
+
+        const containerMessage = document.querySelector('.container-message');
+
+        let altura = containerMessage.scrollHeight;
+        console.log(altura);
+        containerMessage.scrollTo(0, altura);
+
+        if(code != '' && code != '//Cole seu código aqui...'){
+            await addDoc(collection(db, 'messages'), {
+                idRoom: idRoom,
+                id_autor: user.uid,
+                message: newMessage,
+                dataEnvio: Date.now(),
+                flg_code: 1,
+                code: code,
+                prog_language: language
+            })
+            .then(()=>{
+                console.log("Enviou!");
+                setNewMessage('');
+                setCodeFieldIOpt(false);
+                setCode('//Cole seu código aqui...');
+            })
+            .catch((error)=>{
+                console.log("ERRO: "+ error);
+            });
+        }else{
+            await addDoc(collection(db, 'messages'), {
+                idRoom: idRoom,
+                id_autor: user.uid,
+                message: newMessage,
+                dataEnvio: Date.now(),
+                flg_code: 0,
+                code: null,
+                prog_language: null
+            })
+            .then(()=>{
+                console.log("Enviou!");
+                setNewMessage('');
+                setCode('//Cole seu código aqui...');
+                setCodeFieldIOpt(false);
+                
+            })
+            .catch((error)=>{
+                console.log("ERRO: "+ error);
+            });
+        }
 
     }
 
@@ -183,6 +239,7 @@ function ChatRoom (){
     }
 
     async function buscaMessages(){
+        
 
         const queryMessages = await query(collection(db,"messages"), where("idRoom", "==", idRoom), orderBy("dataEnvio", "asc"));
 
@@ -195,7 +252,11 @@ function ChatRoom (){
                 idRoom: doc.data().idRoom,
                 id_autor: doc.data().id_autor,
                 message: doc.data().message,
-                dataEnvio: doc.data().dataEnvio
+                dataEnvio: doc.data().dataEnvio,
+                flg_code: doc.data().flg_code,
+                code: doc.data().code,
+                prog_language: doc.data().prog_language,
+
             })
         });
 
@@ -203,6 +264,12 @@ function ChatRoom (){
 
         })
 
+    }
+
+    function cancelCodeMsg(){
+        setCode('//Cole seu código aqui...');
+        setCodeFieldIOpt(false);
+        
     }
 
     return(
@@ -326,6 +393,14 @@ function ChatRoom (){
                                             <div className="msg-right">
                                                 <div className="msg-user-right">
                                                     <label className="msg">{mensagem.message}</label>
+                                                    
+                                                    {mensagem.flg_code === 1 ? <div className="code-field-msg"><Editor
+                                                        height="200px"
+                                                        defaultLanguage={mensagem.prog_language}
+                                                        theme='vs-dark'
+                                                        value={mensagem.code}
+                                                        /> </div> : <></>}
+                                                    
                                                 </div>
                                             </div>
                                         )
@@ -343,9 +418,91 @@ function ChatRoom (){
                                 
                                 
                             </div>
-                            <div className="container-btn-send">
-                                <input className="input-msg" type="text" placeholder="Digite sua mensagem..." value={newMessage} onChange={(e)=>{setNewMessage(e.target.value)}}/>
-                                <button className="btn-enviar-msg" onClick={sendMessage}>Enviar</button>
+
+                            
+                            
+                            {
+                                codeFieldIOpt === true ?
+                                <div className="input-code-field">
+                                    <div className="opts-code-field">
+                                    <select onChange={(e) => { setLanguage(e.target.value); } } className="select-code-language" required>
+                                                <option value="" disabled="" hidden="" selected="">Selecione a linguagem...</option>
+                                                <option value="plaintext">plaintext</option>
+                                                <option value="abap">abap</option>
+                                                <option value="apex">apex</option>
+                                                <option value="azcli">azcli</option>
+                                                <option value="bat">bat</option>
+                                                <option value="bicep">bicep</option>
+                                                <option value="cameligo">cameligo</option>
+                                                <option value="clojure">clojure</option>
+                                                <option value="coffeescript">coffeescript</option>
+                                                <option value="c">c</option>
+                                                <option value="cpp">cpp</option>
+                                                <option value="csharp">csharp</option>
+                                                <option value="csp">csp</option>
+                                                <option value="css">css</option>
+                                                <option value="cypher">cypher</option>
+                                                <option value="dart">dart</option>
+                                                <option value="dockerfile">dockerfile</option>
+                                                <option value="ecl">ecl</option>
+                                                <option value="elixir">elixir</option>
+                                                <option value="flow9">flow9</option>
+                                                <option value="fsharp">fsharp</option>
+                                                <option value="go">go</option>
+                                                <option value="graphql">graphql</option>
+                                                <option value="handlebars">handlebars</option>
+                                                <option value="hcl">hcl</option>
+                                                <option value="html">html</option>
+                                                <option value="ini">ini</option>
+                                                <option value="java">java</option>
+                                                <option value="javascript">javascript</option>
+                                                <option value="julia">julia</option>
+                                                <option value="kotlin">kotlin</option>
+                                                <option value="less">less</option>
+                                                <option value="lexon">lexon</option>
+                                                <option value="lua">lua</option>
+                                                <option value="liquid">liquid</option>
+                                                <option value="m3">m3</option>
+                                                <option value="markdown">markdown</option>
+                                                <option value="mips">mips</option>
+                                                <option value="msdax">msdax</option>
+                                                <option value="mysql">mysql</option>
+                                                <option value="objective">objective-c</option>
+                                                <option value="pascal">pascal</option>
+                                                <option value="pascaligo">pascaligo</option>
+                                                <option value="perl">perl</option>
+                                                <option value="pgsql">pgsql</option>
+                                                <option value="php">php</option>
+                                                <option value="pla">pla</option>
+                                                <option value="postiats">postiats</option>
+                                                <option value="powerquery">powerquery</option>
+                                                <option value="powershell">powershell</option>
+                                                <option value="proto">proto</option>
+                                                <option value="pug">pug</option>
+                                                <option value="python">python</option>
+                                                <option value="qsharp">qsharp</option>
+                                                <option value="r">r</option>
+                                                <option value="razor">razor</option>
+                                                <option value="redis">redis</option>
+                                                <option value="redshift">redshift</option>
+                                            </select>
+                                            <MdCancel className="btn-cancel-code" color="#FFF" size={24} onClick={()=>{setCodeFieldIOpt(false)}}/>
+                                        </div>
+                                            <div>
+                                                    <Editor
+                                                        height="200px"
+                                                        defaultLanguage={`plaintext`}
+                                                        theme='vs-dark'
+                                                        defaultValue='//Cole seu código aqui...'
+                                                        value={code}
+                                                        onChange={(e)=>{setCode(e)}}/>;
+                                            </div>
+                                </div>: <></> }
+
+                                <div className="container-btn-send">
+                                <input className="input-msg" onKeyDown={keyPress} type="text" placeholder="Digite sua mensagem..." value={newMessage} onChange={(e)=>{setNewMessage(e.target.value)}}/>
+                                <BiCodeBlock  onClick={()=>{setCodeFieldIOpt(true);}} className="btn-code-msg" color="#FFF" size={24}/>
+                                <button className="btn-enviar-msg" onClick={sendMessage}><BsSendFill className="btn-send-msg" color="#FFF" size={20}/></button>
                             </div>
                     </div>
     

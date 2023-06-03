@@ -4,6 +4,9 @@ import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
 import { BsChatText } from 'react-icons/bs';
 import avatarPerfil from '../../assets/img/avatar.png';
 
+//Monaco
+import Editor from '@monaco-editor/react';
+
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../../contexts/auth';
@@ -62,6 +65,10 @@ function Buscar(){
                 fotoAutor: doc.data().fotoUserPost,
                 nomeAutor: doc.data().nomeAutor,
                 nomeUserAutor: doc.data().nomeUserAutor,
+                dataOrdem: doc.data().dataOrdem,
+                flg_code: doc.data().flg_code,
+                code: doc.data().code,
+                prog_language: doc.data().prog_language,
                 favoritado: 1,
                 uid_fav:listaIdfavs[n]
                 })
@@ -80,6 +87,9 @@ function Buscar(){
                         nomeAutor: doc.data().nomeAutor,
                         nomeUserAutor: doc.data().nomeUserAutor,
                         dataOrdem: doc.data().dataOrdem,
+                        flg_code: doc.data().flg_code,
+                        code: doc.data().code,
+                        prog_language: doc.data().prog_language,
                         favoritado: 0,
                         uid_fav: null
                         })
@@ -179,6 +189,12 @@ function Buscar(){
                                         <h2>{post.conteudo}</h2><br/>
                                         <div className="img-conteudo-post">
                                         {post.imagem === null ? <></> : <img src={post.imagem}/>}
+                                        {post.flg_code === 1 ? <Editor
+                                                        height="200px"
+                                                        defaultLanguage={post.prog_language}
+                                                        theme='vs-dark'
+                                                        value={post.code}
+                                                        /> : <></>}
                                         </div>
                                     </div>
 

@@ -142,7 +142,7 @@ function AuthProvider({ children }){
         setUser(null);
     }
 
-    async function handleUploadFotoPost(tituloPost, tagsPost, conteudoPost, imagem){
+    async function handleUploadFotoPost(tituloPost, tagsPost, conteudoPost, imagem, flg_code = null, code = null, prog_language = null){
         const currentUid = user.uid;
 
         const updloadRef = ref(storage, `post/${currentUid}/${tituloPost}/${imagem.name}`);
@@ -165,7 +165,10 @@ function AuthProvider({ children }){
                     diaPost: dataAtual[0],
                     mesPost: dataAtual[1],
                     anoPost: dataAtual[2],
-                    horaPost: horaAtual
+                    horaPost: horaAtual,
+                    flg_code: flg_code,
+                    code: code,
+                    prog_language: prog_language
                 })
                 .then(()=>{
                     toast.success('POST ENVIADO!');
@@ -201,7 +204,7 @@ function AuthProvider({ children }){
 
     }
 
-    async function addPost(titulo, tags, conteudo, imagem){
+    async function addPost(titulo, tags, conteudo, imagem, flg_code = null, code = null, prog_language = null){
 
         if(imagem === null){
             await addDoc(collection(db, 'posts'), {
@@ -217,7 +220,10 @@ function AuthProvider({ children }){
                 diaPost: dataAtual[0],
                 mesPost: dataAtual[1],
                 anoPost: dataAtual[2],
-                horaPost: horaAtual
+                horaPost: horaAtual,
+                flg_code: flg_code,
+                code: code,
+                prog_language: prog_language
             })
             .then(()=>{
                 toast.success('POST ENVIADO!');
@@ -226,7 +232,7 @@ function AuthProvider({ children }){
                 console.log("ERRO: "+ error);
             });
         }else{
-            await handleUploadFotoPost(titulo, tags, conteudo, imagem);
+            await handleUploadFotoPost(titulo, tags, conteudo, imagem, flg_code, code, prog_language);
         }
     }
 

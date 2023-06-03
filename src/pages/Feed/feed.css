@@ -206,6 +206,15 @@
 .btns-post svg{
     margin-right: 10px;
 }
+
+.btn-code-field{
+    margin-right: 5px;
+}
+
+.select-code-language{
+    margin-bottom: 15px;
+}
+
 @media screen and (max-width: 830px){
     
     .area-post{
