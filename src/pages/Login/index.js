@@ -35,7 +35,6 @@ function Login(){
                     <input type="password" value={password} onChange={(e)=>{setPassword(e.target.value)}}/>
                     <br/>
                     <input type="submit" value={loadingAuth ? 'Carregando...' : 'Entrar'} className='btn-entrar'/>
-                    <a href="/">Esqueceu a senha?</a>
                     <br/>
                         <hr/>
                     <br/>

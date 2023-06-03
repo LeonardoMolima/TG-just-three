@@ -91,11 +91,17 @@ function Perfil(){
                     </div>
                     <div className="card-info">
                         <div className="row1">
-                            <h1>{user.nome}</h1>
-                            <span>@{user.nomeUser}</span>
+                            <div className="row1-nome-nomeUser">
+                                <h1 className="h1-nome-perfil">{user.nome}</h1>
+                                <span>@{user.nomeUser}</span>
+                            </div>
+                            
                             <Link to="/perfil/config">
                             <VscSettingsGear color="#FFF" size={20}/>
                             </Link>
+                        </div>
+                        <div className="row2" style={{justifyContent: "left"}}>
+                        <h2>Programador nível: <strong>{user.nvlProgramacao}</strong></h2>
                         </div>
                         <div className="row2">
                             <h2>Posts {countPosts}</h2>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useLayoutEffect } from "react";
 import { AuthContext } from "../../contexts/auth";
 import { db } from "../../services/FirebaseConnection";
 import { collection, onSnapshot, addDoc } from 'firebase/firestore';
@@ -17,28 +17,44 @@ function FavoritosPessoas(){
     const { user } = useContext(AuthContext);
     const [resultados, setResultados] = useState([]);
 
-    useEffect(()=>{
-
-        async function buscaPessoas(){
-            const queryVerificaFollow = await query(collection(db,"favoritou_favoritado"),where("id_favoritou" ,"==", user.uid),orderBy("nome","asc"));
-            const queryPessoas  = await query(collection(db,"users"),orderBy("nome","asc"));
-            
-            var listaFavs = [];
-            var cont = 0;
+    useLayoutEffect(()=>{
+        buscaPessoas();
+    },[])
     
-             onSnapshot(queryVerificaFollow, (snapshot) => {
-        
-                snapshot.forEach((doc) => {
-                    listaFavs.push(doc.data().id_favoritado);
-                });
-            })
 
-            console.log(listaFavs);
-           onSnapshot(queryPessoas, (snapshot) => {
-           let lista = [];
-   
-           snapshot.forEach((doc) => {
-               if(doc.id === listaFavs[cont]){
+    async function buscaPessoas(){
+        const queryVerificaFollow = await query(collection(db,"favoritou_favoritado"),where("id_favoritou" ,"==", user.uid),orderBy("nome","asc"));
+        const queryPessoas  = await query(collection(db,"users"),orderBy("nome","asc"));
+        
+        var listaFavs = [];
+        var cont = 0;
+
+         onSnapshot(queryVerificaFollow, (snapshot) => {
+    
+            snapshot.forEach((doc) => {
+                listaFavs.push(doc.data().id_favoritado);
+            });
+        })
+
+        console.log(listaFavs);
+       onSnapshot(queryPessoas, (snapshot) => {
+       let lista = [];
+
+       snapshot.forEach((doc) => {
+           if(doc.id === listaFavs[cont]){
+           lista.push({
+            id: doc.id,
+            nome: doc.data().nome,
+            nomeUser: doc.data().nomeUser,
+            fotoPerfil: doc.data().fotoPerfil,
+            biografia: doc.data().biografia,
+            dataNascimento: doc.data().dataNascimento,
+            genero: doc.data().genero,
+            nvlProgramacao: doc.data().nvlProgramacao,
+            favoritado:1
+           })
+           cont++;
+           }else{
                lista.push({
                 id: doc.id,
                 nome: doc.data().nome,
@@ -47,34 +63,21 @@ function FavoritosPessoas(){
                 biografia: doc.data().biografia,
                 dataNascimento: doc.data().dataNascimento,
                 genero: doc.data().genero,
-                favoritado:1
-               })
-               cont++;
-               }else{
-                   lista.push({
-                    id: doc.id,
-                    nome: doc.data().nome,
-                    nomeUser: doc.data().nomeUser,
-                    fotoPerfil: doc.data().fotoPerfil,
-                    biografia: doc.data().biografia,
-                    dataNascimento: doc.data().dataNascimento,
-                    genero: doc.data().genero,
-                    favoritado:0
-                       })
-               }
-           });
+                nvlProgramacao: doc.data().nvlProgramacao,
+                favoritado:0
+                   })
+           }
+       });
 
-           console.log(lista);
-            setResultados(lista);
+       console.log(lista);
+       setTimeout(()=>{
+        setResultados(lista);
+       },100)
+
+       });
+
+   }
    
-           });
-
-       }
-
-        buscaPessoas();
-    },[])
-
-    
 
     return(
         <div>
@@ -112,7 +115,7 @@ function FavoritosPessoas(){
                                                 <span>Gênero: {pessoa.genero}</span>
                                             </div>
                                         </div>
-
+                                        <h6 className="nvlProg-autor-post">Programador nível: <strong>{pessoa.nvlProgramacao}</strong></h6>
                                             <div className="conteudo-post">
                                                 <h1></h1>
                                                 <span>{pessoa.biografia}</span><br/>             

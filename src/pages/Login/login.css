@@ -30,6 +30,10 @@ input{
     outline: none;
 }
 
+input:focus{
+    border-color: rgb(0, 195, 255);
+}
+
 input[type=submit],button{
     cursor: pointer;
     color: white;

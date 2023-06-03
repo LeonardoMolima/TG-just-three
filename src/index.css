@@ -15,3 +15,22 @@ body{
   background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(21,57,89,1) 50%);
   background-attachment: fixed;
 }
+
+body::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+  background-color: transparent;
+}
+
+body::-webkit-scrollbar
+{
+  background-color: transparent;
+  border-radius: 10px;
+	width: 9px;
+}
+
+body::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #555;
+}

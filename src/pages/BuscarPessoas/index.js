@@ -33,7 +33,8 @@ function BuscarPessoas(){
                 fotoPerfil: doc.data().fotoPerfil,
                 biografia: doc.data().biografia,
                 dataNascimento: doc.data().dataNascimento,
-                genero: doc.data().genero
+                genero: doc.data().genero,
+                nvlProgramacao: doc.data().nvlProgramacao,
             })
         });
 
@@ -83,7 +84,7 @@ function BuscarPessoas(){
                                             <span>Gênero: {pessoa.genero}</span>
                                         </div>
                                     </div>
-
+                                    <h6 className="nvlProg-autor-post">Programador nível: <strong>{pessoa.nvlProgramacao}</strong></h6>
                                         <div className="conteudo-post">
                                             <h1></h1>
                                             <span>{pessoa.biografia}</span><br/>             

@@ -11,11 +11,28 @@
     padding-block: 5px;
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 8px;
-    width: 100%;
+    width: 50% !important;
     height: 100%;
     display: flex;
     flex-direction: column;
     overflow-y:scroll;
+}
+
+.rooms::-webkit-scrollbar-track
+{
+	border-radius: 10px;
+
+}
+
+.rooms::-webkit-scrollbar
+{
+	width: 9px;
+}
+
+.rooms::-webkit-scrollbar-thumb
+{
+	border-radius: 10px;
+	background-color: #555;
 }
 
 .container-busca-pessoa{
@@ -24,7 +41,7 @@
     justify-content: center;
     align-items: center;
     padding-bottom: 25px;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    /* border-bottom: 1px solid rgba(255,255,255,0.2); */
 }
 
 .btn-buscar-pessoa-chat{
@@ -69,7 +86,7 @@
     padding-inline: 15px;
     padding-block: 10px;
     width: 100%;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    /* border-bottom: 1px solid rgba(255,255,255,0.2); */
     display: flex;
     align-items: center;
     flex-direction: row;
@@ -100,6 +117,7 @@
 
 .card-pessoa-chat{
     width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
 }
 
 .btn-open-chat{
@@ -111,7 +129,7 @@
 .div-btn-open-chat{
     display: flex;
     align-items: center;
-    border-bottom: 1px solid rgba(255,255,255,0.2);
+    /* //border-bottom: 1px solid rgba(255,255,255,0.2); */
 }
 
 @media screen and (max-width:1280px) {
@@ -149,10 +167,7 @@
         max-height: 57px;
     }
     .rooms{
-        width: 50%;
-    }
-    .message{
-        width: 50%;
+        width: 100% !important;
     }
     .img-pessoa-chat img{ 
         max-width: 30px;

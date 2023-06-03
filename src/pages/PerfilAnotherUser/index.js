@@ -53,7 +53,8 @@ function PerfilAnotherUser(){
                     nome: snapshot.data().nome,
                     nomeUser: snapshot.data().nomeUser,
                     fotoPerfil: snapshot.data().fotoPerfil,
-                    biografia: snapshot.data().biografia
+                    biografia: snapshot.data().biografia,
+                    nvlProgramacao: snapshot.data().nvlProgramacao,
                 })
             })
             .catch((erro)=>{
@@ -200,9 +201,14 @@ function PerfilAnotherUser(){
                     </div>
                     <div className="card-info">
                         <div className="row1">
-                            <h1>{anotherUser.nome}</h1>
-                            <span>@{anotherUser.nomeUser}</span>
+                            <div className="row1-nome-nomeUser">
+                                <h1>{anotherUser.nome}</h1>
+                                <span>@{anotherUser.nomeUser}</span>
+                            </div>
                             {favExistsPerfilUser === true ? <button onClick={()=>{unfollow(); optClick("removeu"); refreshPage();}}>Favoritado</button> : <button onClick={()=>{favoritar(anotherUser.nome)}}>Favoritar</button>}
+                        </div>
+                        <div className="row2" style={{justifyContent: "left"}}>
+                            <h2>Programador nível: <strong>{anotherUser.nvlProgramacao}</strong></h2>
                         </div>
                         <div className="row2">
                             <h2>Posts {countPosts}</h2>

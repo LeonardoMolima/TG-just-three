@@ -68,6 +68,10 @@
     outline: none;
 }
 
+.form-profile textarea:focus{
+        border-color: rgb(0, 195, 255);
+}
+
 .form-profile button{
     margin-top: 1em;
     background-color: #0094FF;

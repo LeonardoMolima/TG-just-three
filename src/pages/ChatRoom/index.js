@@ -373,11 +373,11 @@ function ChatRoom (){
                                         <div className="infos-header-chatRoom">
                                             {room.idUserJoinChat === user.uid ? 
                                             <><Link to={"/chat"}><button className="btn-open-chat"><AiOutlineArrowLeft size={24} color="#FFF"/></button></Link>
-                                            <img className="img-header-chatRoom" src={room.foto_UserStart} />
+                                            {room.foto_UserStart === null? <img className="img-header-chatRoom" src={avatarPerfil} /> :<img className="img-header-chatRoom" src={room.foto_UserStart} />}
                                             <span className="nome-header-chatRoom">{room.nome_UserStart}</span></>
                                             : 
                                             <><Link to={"/chat"}><button className="btn-open-chat"><AiOutlineArrowLeft size={24} color="#FFF"/></button></Link>
-                                            <img className="img-header-chatRoom" src={room.foto_UserJoin}/>
+                                            {room.foto_UserStart === null? <img className="img-header-chatRoom" src={avatarPerfil} /> :<img className="img-header-chatRoom" src={room.foto_UserStart} />}
                                             <span className="nome-header-chatRoom">{room.nome_UserJoin}</span></>}
                                         </div>
                                     )}
@@ -510,7 +510,7 @@ function ChatRoom (){
                                 <div className="container-btn-send">
                                 <input className="input-msg" onKeyDown={keyPress} type="text" placeholder="Digite sua mensagem..." value={newMessage} onChange={(e)=>{setNewMessage(e.target.value)}}/>
                                 <BiCodeBlock  onClick={()=>{setCodeFieldIOpt(true);}} className="btn-code-msg" color="#FFF" size={24}/>
-                                <button className="btn-enviar-msg" onClick={sendMessage}><BsSendFill className="btn-send-msg" color="#FFF" size={20}/></button>
+                                <button className="btn-enviar-msg" onClick={sendMessage}><BsSendFill className="btn-send-msg" color="#FFF" size={15}/></button>
                             </div>
                     </div>
     

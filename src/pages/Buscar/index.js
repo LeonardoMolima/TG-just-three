@@ -65,6 +65,7 @@ function Buscar(){
                 fotoAutor: doc.data().fotoUserPost,
                 nomeAutor: doc.data().nomeAutor,
                 nomeUserAutor: doc.data().nomeUserAutor,
+                nvlProgramacao: doc.data().nvlProgramacao,
                 dataOrdem: doc.data().dataOrdem,
                 flg_code: doc.data().flg_code,
                 code: doc.data().code,
@@ -86,6 +87,7 @@ function Buscar(){
                         fotoAutor: doc.data().fotoUserPost,
                         nomeAutor: doc.data().nomeAutor,
                         nomeUserAutor: doc.data().nomeUserAutor,
+                        nvlProgramacao: doc.data().nvlProgramacao,
                         dataOrdem: doc.data().dataOrdem,
                         flg_code: doc.data().flg_code,
                         code: doc.data().code,
@@ -173,8 +175,9 @@ function Buscar(){
                                             {post.fotoAutor === null ? <img src={avatarPerfil}/> : <img src={post.fotoAutor}/>}
                                             <div className="nome-nomeUser">
                                                 <strong>{post.nomeAutor}</strong>
-                                                <Link to={"/perfilUser/"+post.id_autor}>@{post.nomeUserAutor}</Link>
+                                                <Link to={"/perfilUser/"+post.id_autor}>@{post.nomeUserAutor}</Link> 
                                             </div>
+                                            
                                         </div>
                                         
                                         <div className="data-hora-post">
@@ -182,7 +185,7 @@ function Buscar(){
                                             <span>{post.hora}</span>
                                         </div>
                                     </div>
-                                    
+                                    <a className="nvlProg-autor-post">Programador nível: {post.nvlProgramacao}</a>
                                     <div className="conteudo-post">
                                         <h1>{post.titulo}</h1>
                                         <span>{post.tags}</span><br/>

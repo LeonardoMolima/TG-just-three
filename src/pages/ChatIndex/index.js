@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext, useEffect, useLayoutEffect } from "react";
 import { Link } from 'react-router-dom';
 import { query, collection, onSnapshot, where, orderBy, addDoc, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../../services/FirebaseConnection";
@@ -12,6 +12,8 @@ import './chat-index.css';
 import { toast } from "react-toastify";
 
 function ChatIndex (){
+
+    
 
     const { user } = useContext(AuthContext);
 
@@ -28,12 +30,14 @@ function ChatIndex (){
     });
     
     useEffect(()=>{
-        buscaChatRooms();
-    },[verificaRemoveClick]);
-
-    useEffect(()=>{
         buscaPosts();
     },[pesquisa]);
+    
+    useLayoutEffect(()=>{
+            buscaChatRooms();
+    },[verificaRemoveClick]);
+
+    
 
     async function buscaChatRooms(){
 

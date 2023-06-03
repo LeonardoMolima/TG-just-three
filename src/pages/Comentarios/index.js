@@ -51,6 +51,7 @@ function Comentarios(){
                     flg_code: doc.data().flg_code,
                     code: doc.data().code,
                     prog_language: doc.data().prog_language,
+                    nvlProgramacao: doc.data().nvlProgramacao
                     });
 
                     setPost(lista);
@@ -80,7 +81,8 @@ function Comentarios(){
                 id_autor: doc.data().uid_userPost,
                 fotoAutor: doc.data().fotoUserPost,
                 nomeAutor: doc.data().nomeAutor,
-                nomeUserAutor: doc.data().nomeUserAutor
+                nomeUserAutor: doc.data().nomeUserAutor,
+                nvlProgramacao: doc.data().nvlProgramacao,
                 })
             });
     
@@ -125,7 +127,7 @@ function Comentarios(){
                                         <span>{post.hora}</span>
                                     </div>
                                 </div>
-                                
+                                <h6 className="nvlProg-autor-post">Programador nível: <strong>{post.nvlProgramacao}</strong></h6>
                                 <div className="conteudo-post">
                                     <h1>{post.titulo}</h1>
                                     <span>{post.tags}</span><br/>
@@ -176,7 +178,7 @@ function Comentarios(){
                                         <span>{comment.hora}</span>
                                     </div>
                                 </div>
-                                
+                                <h6 className="nvlProg-autor-post">Programador nível: <strong>{comment.nvlProgramacao}</strong></h6>
                                 <div className="conteudo-post">
                                     <h2>{comment.conteudo}</h2><br/>
                                 </div>

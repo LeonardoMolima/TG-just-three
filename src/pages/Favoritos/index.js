@@ -59,6 +59,7 @@ function Favoritos(){
                flg_code: doc.data().flg_code,
                code: doc.data().code,
                prog_language: doc.data().prog_language,
+               nvlProgramacao: doc.data().nvlProgramacao,
                favoritado: 1
                })
                n++;
@@ -79,13 +80,19 @@ function Favoritos(){
                        flg_code: doc.data().flg_code,
                        code: doc.data().code,
                        prog_language: doc.data().prog_language,
+                       nvlProgramacao: doc.data().nvlProgramacao,
                        favoritado: 0
                        })
                }
            });
 
            console.log(lista);
+
+           console.log(lista);
+           setTimeout(()=>{
             setPosts(lista);
+           },100)
+            
    
            });
 
@@ -137,7 +144,7 @@ function Favoritos(){
                                         <span>{post.hora}</span>
                                     </div>
                                 </div>
-                                
+                                <h6 className="nvlProg-autor-post">Programador nível: <strong>{post.nvlProgramacao}</strong></h6>
                                 <div className="conteudo-post">
                                     <h1>{post.titulo}</h1>
                                     <span>{post.tags}</span><br/>

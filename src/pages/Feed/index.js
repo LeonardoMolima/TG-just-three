@@ -12,6 +12,7 @@ import Editor from '@monaco-editor/react';
 import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
 import { BsChatText, BsCardImage } from 'react-icons/bs';
 import { BiCodeBlock } from 'react-icons/bi';
+import { MdCancel } from 'react-icons/md';
 import avatarPerfil from '../../assets/img/avatar.png';
 import SideMenu from "../../components/SideMenu";
 import './feed.css';
@@ -92,6 +93,7 @@ function Feed(){
                 fotoAutor: doc.data().fotoUserPost,
                 nomeAutor: doc.data().nomeAutor,
                 nomeUserAutor: doc.data().nomeUserAutor,
+                nvlProgramacao: doc.data().nvlProgramacao,
                 flg_code: doc.data().flg_code,
                 code: doc.data().code,
                 prog_language: doc.data().prog_language,
@@ -113,6 +115,7 @@ function Feed(){
                         nomeAutor: doc.data().nomeAutor,
                         nomeUserAutor: doc.data().nomeUserAutor,
                         dataOrdem: doc.data().dataOrdem,
+                        nvlProgramacao: doc.data().nvlProgramacao,
                         flg_code: doc.data().flg_code,
                         code: doc.data().code,
                         prog_language: doc.data().prog_language,
@@ -212,6 +215,12 @@ function Feed(){
 
     favClick();
 
+    function cancelCodeMsg(){
+        setCode('//Cole seu código aqui...');
+        setCodeFieldIOpt(false);
+        
+    }
+
     return(
         
         <div>
@@ -238,7 +247,9 @@ function Feed(){
                                 
                                 {
                                 codeFieldIOpt === true ?
-                                <div><select onChange={(e) => { setLanguage(e.target.value); } } className="select-code-language" required>
+                                <div>
+                                    <div className="opts-code-field">
+                                    <select onChange={(e) => { setLanguage(e.target.value); } } className="select-code-language" required>
                                                 <option value="" disabled="" hidden="" selected="">Selecione a linguagem...</option>
                                                 <option value="plaintext">plaintext</option>
                                                 <option value="abap">abap</option>
@@ -298,7 +309,10 @@ function Feed(){
                                                 <option value="razor">razor</option>
                                                 <option value="redis">redis</option>
                                                 <option value="redshift">redshift</option>
-                                            </select><div className='code-field'>
+                                            </select>
+                                            <MdCancel className="btn-cancel-code" color="#FFF" size={24} onClick={()=>{cancelCodeMsg();}}/>
+                                            </div>
+                                            <div className='code-field'>
                                                     <Editor
                                                         height="200px"
                                                         defaultLanguage={`plaintext`}
@@ -356,7 +370,7 @@ function Feed(){
                                             <span>{post.hora}</span>
                                         </div>
                                     </div>
-                                    
+                                    <h6 className="nvlProg-autor-post">Programador nível: <strong>{post.nvlProgramacao}</strong></h6>
                                     <div className="conteudo-post">
                                         <h1>{post.titulo}</h1>
                                         <span>{post.tags}</span><br/>
