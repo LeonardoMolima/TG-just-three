@@ -36,11 +36,6 @@ function ChatRoom (){
 
     useEffect(()=>{
         buscaMessages();
-        setTimeout(()=>{const containerMessage = document.querySelector('.container-message');
-        let altura = containerMessage.scrollHeight;
-        console.log(altura);
-        containerMessage.scrollTo(0, altura);},100);
-        
     },[]);
 
     useEffect(()=>{
@@ -260,6 +255,11 @@ function ChatRoom (){
             })
         });
 
+        setTimeout(()=>{const containerMessage = document.querySelector('.container-message');
+        let altura = containerMessage.scrollHeight;
+        console.log(altura);
+        containerMessage.scrollTo(0, altura);},100);
+
         setRoomMessages(lista);
 
         })
@@ -416,7 +416,7 @@ function ChatRoom (){
                                                         theme='vs-dark'
                                                         value={mensagem.code}
                                                         /> </div> : <></>}
-                                                        
+
                                                 </div>
                                             </div>
                                         )
