@@ -9,7 +9,7 @@ import { query, orderBy, where } from "firebase/firestore";
 //Monaco
 import Editor from '@monaco-editor/react';
 
-import { AiOutlineStar, AiFillStar } from 'react-icons/ai';
+import { AiOutlineStar, AiFillStar, AiFillDelete } from 'react-icons/ai';
 import { BsChatText, BsCardImage } from 'react-icons/bs';
 import { BiCodeBlock } from 'react-icons/bi';
 import { MdCancel } from 'react-icons/md';
@@ -160,12 +160,12 @@ function Feed(){
    async function handleSubmit(e){
         e.preventDefault();
 
-    if(code != '' && code != "'//Cole seu código aqui...'"){
+    if(code !== ''){
         await addPost(tituloPost, tagsPost, conteudoPost, imgPost, 1, code, language);
     }else{
        await addPost(tituloPost, tagsPost, conteudoPost, imgPost, 0, null, null);
     }
-       setCode('//Cole seu código aqui...');
+       setCode('');
        setCodeFieldIOpt(false);
        setTituloPost('');
        setTagsPost('');
@@ -216,9 +216,17 @@ function Feed(){
     favClick();
 
     function cancelCodeMsg(){
-        setCode('//Cole seu código aqui...');
+        setCode('');
         setCodeFieldIOpt(false);
         
+    }
+
+    async function deletePost(idPost){
+        const docRef = doc(db, "posts", idPost);
+        await deleteDoc(docRef)
+        .then(()=>{
+            toast.success('Postagem Apagada!');
+        });
     }
 
     return(
@@ -310,7 +318,7 @@ function Feed(){
                                                 <option value="redis">redis</option>
                                                 <option value="redshift">redshift</option>
                                             </select>
-                                            <MdCancel className="btn-cancel-code" color="#FFF" size={24} onClick={()=>{cancelCodeMsg();}}/>
+                                            <MdCancel className="btn-cancel-code" color="#000" size={24} onClick={()=>{cancelCodeMsg();}}/>
                                             </div>
                                             <div className='code-field'>
                                                     <Editor
@@ -332,11 +340,13 @@ function Feed(){
                                     <img src={imgUrl} alt="Foto de Post"/>
                                 )}
                                <label className='btn-code-field' onClick={()=>{setCodeFieldIOpt(true);}}>
-                                    <BiCodeBlock color="#FFF" size={25}/>
+                                    <span>
+                                    <BiCodeBlock color="#000" size={25}/>
+                                    </span>
                                 </label> 
                                 <label className="label-add-post">     
                                     <span>
-                                        <BsCardImage color="#FFF" size={25}/>
+                                        <BsCardImage color="#000" size={25}/>
                                     </span>
                                     <input type="file" accept="image/*" onChange={handleFile} hidden/>
                                 </label>
@@ -368,6 +378,7 @@ function Feed(){
                                         <div className="data-hora-post">
                                             <span>{post.data}</span>
                                             <span>{post.hora}</span>
+                                            {post.id_autor === user.uid ? <span className='btn-del-post' onClick={()=>{ deletePost(post.id);}}><AiFillDelete color="#fff" size={22}/> </span> : <></>}
                                         </div>
                                     </div>
                                     <h6 className="nvlProg-autor-post">Programador nível: <strong>{post.nvlProgramacao}</strong></h6>
@@ -375,15 +386,19 @@ function Feed(){
                                         <h1>{post.titulo}</h1>
                                         <span>{post.tags}</span><br/>
                                         <h2>{post.conteudo}</h2><br/>
-                                        <div className="img-conteudo-post">
-                                        {post.imagem === null ? <></> : <img src={post.imagem} alt="Foto Postagem"/>}
-                                        {post.flg_code === 1 ? <Editor
+                                        
+                                        {post.flg_code === 1 ? <div className="img-conteudo-post">
+                                                        <Editor
                                                         height="200px"
                                                         defaultLanguage={post.prog_language}
                                                         theme='vs-dark'
                                                         value={post.code}
-                                                        /> : <></>}
-                                        </div>
+                                                        /> </div> 
+                                                        : <></>}
+                                        
+                                        
+                                        {post.imagem === null ? <></> : <div className="img-conteudo-post"> <img src={post.imagem} alt="Foto Postagem"/> </div>}
+                                        
                                     </div>
     
                                     <div className='btns-post'>

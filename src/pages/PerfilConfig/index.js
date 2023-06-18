@@ -54,6 +54,7 @@ function PerfilConfig(){
                     fotoPerfil: urlFoto,
                     nome: nome,
                     biografia: biografia,
+                    nvlProgramacao:nvlProgramacao,
                 })
                 .then( () => {
                     let data = {
@@ -61,6 +62,7 @@ function PerfilConfig(){
                         fotoPerfil: urlFoto,
                         nome: nome,
                         biografia: biografia,
+                        nvlProgramacao:nvlProgramacao,
                     }
     
                     setUser(data);
@@ -79,11 +81,13 @@ function PerfilConfig(){
             const docRef = doc(db, 'users', user.uid);
             await updateDoc(docRef, {
                 nome:nome,
+                nvlProgramacao:nvlProgramacao,
             })
             .then( () => {
                 let data = {
                     ...user,
                     nome: nome,
+                    nvlProgramacao:nvlProgramacao,
                 }
 
                 setUser(data);
@@ -91,36 +95,38 @@ function PerfilConfig(){
                 toast.success("Dados atualizados!");
 
             });
-        }if( nvlProgramacao !== null && fotoPerfil !== null){
-            //lógica para mudar o nome e a biografia
-            const docRef = doc(db, 'users', user.uid);
-            await updateDoc(docRef, {
-                nome:nome,
-                biografia: biografia,
-                nvlProgramacao:nvlProgramacao,
-            })
-            .then( () => {
-                let data = {
-                    ...user,
-                    nome:nome,
-                    biografia: biografia,
-                    nvlProgramacao:nvlProgramacao,
-                }
+        // }if( nvlProgramacao !== null && fotoPerfil !== null){
+        //     //lógica para mudar o nome e a biografia
+        //     const docRef = doc(db, 'users', user.uid);
+        //     await updateDoc(docRef, {
+        //         nome:nome,
+        //         biografia: biografia,
+        //         nvlProgramacao:nvlProgramacao,
+        //     })
+        //     .then( () => {
+        //         let data = {
+        //             ...user,
+        //             nome:nome,
+        //             biografia: biografia,
+        //             nvlProgramacao:nvlProgramacao,
+        //         }
 
-                handleUploadFoto();
-                setUser(data);
-                storageUser(data);
-            });
+        //         handleUploadFoto();
+        //         setUser(data);
+        //         storageUser(data);
+        //     });
         }else if(fotoPerfil === null && nome === user.nome && biografia !== ''){
             //logica para alterar somente a biografia
             const docRef = doc(db, 'users', user.uid);
             await updateDoc(docRef, {
                 biografia:biografia,
+                nvlProgramacao:nvlProgramacao,
             })
             .then( () => {
                 let data = {
                     ...user,
                     biografia: biografia,
+                    nvlProgramacao:nvlProgramacao,
                 }
 
                 setUser(data);
@@ -133,12 +139,14 @@ function PerfilConfig(){
             await updateDoc(docRef, {
                 nome:nome,
                 biografia:biografia,
+                nvlProgramacao:nvlProgramacao,
             })
             .then( () => {
                 let data = {
                     ...user,
                     nome:nome,
                     biografia: biografia,
+                    nvlProgramacao:nvlProgramacao,
                 }
 
                 setUser(data);

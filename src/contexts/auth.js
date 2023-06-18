@@ -157,6 +157,7 @@ function AuthProvider({ children }){
                     fotoUserPost: user.fotoPerfil,
                     nomeAutor: user.nome,
                     nomeUserAutor: user.nomeUser,
+                    nvlProgramacao: user.nvlProgramacao,
                     titulo:tituloPost,
                     tags:tagsPost,
                     conteudo:conteudoPost,

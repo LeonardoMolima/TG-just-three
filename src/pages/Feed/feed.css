@@ -22,6 +22,7 @@
     padding: 20px;
     border: 1px solid rgba(255,255,255,0.2);
     border-radius: 8px;
+    background-color: rgb(255, 255, 255);
 }
 
 .post{
@@ -34,9 +35,9 @@
     object-fit: cover;
     border-radius: 50%;
     margin-right: 5px;
-    -webkit-box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
-    -moz-box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
-    box-shadow: 10px 10px 51px -14px rgba(0,0,0,0.75);
+    -webkit-box-shadow: -2px 2px 9px -1px rgb(0 0 0);
+    -moz-box-shadow: -2px 2px 9px -1px rgb(0 0 0);
+    box-shadow: -2px 2px 9px -1px rgb(0 0 0);
 }
 
 .post textarea{
@@ -45,9 +46,8 @@
     font-size: 15px;
     font-family: sans-serif;
     padding-inline: 3px;
-    background-color: #D9CDC1;
-    border: 2px solid white;
-    border-color: white;
+    background-color: #ffffff;
+    border: 2px solid rgba(0, 0, 0, 0.411);
     border-radius: 8px;
     min-width: 500px;
     min-height: 70px;
@@ -68,7 +68,7 @@
 .options-add-post button{
     margin-left: 1.0em;
     width: 70px;
-    background-color: #0094FF;
+    background-color: #000000;
 }
 
 .inputs-post {
@@ -87,7 +87,7 @@
 }
 
 .inputs-post label{
-    color: white;
+    color: rgba(0, 0, 0, 0.411);
     font-size: 15px;
     margin-left: 4px;
     margin-right: 4px;
@@ -110,6 +110,7 @@
     padding: 20px;
     width: 600px;
     border: 1px solid rgba(255,255,255,0.2);
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: 8px;
     margin-block: 1.0em;
 }
@@ -190,6 +191,7 @@
 }
 
 .conteudo-post .img-conteudo-post{
+    margin-block: 5px;
     display: flex;
     justify-content: center;
 }
@@ -214,6 +216,16 @@
     display: flex;
     align-items: center;
     background-color: transparent;
+}
+
+.btn-del-post{
+    opacity: 0.4 !important;
+    cursor: pointer;
+}
+
+.btn-del-post:hover{
+    opacity: 1.0 !important;
+    transition: 0.5s;
 }
 
 .btns-post svg{

@@ -13,9 +13,9 @@
     border-radius: 0;
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
-    border-left: 2px solid white;
-    border-top: 2px solid white;
-    border-bottom: 2px solid white;
+    border-left: 2px solid rgba(0, 0, 0, 0.411);
+    border-top: 2px solid rgba(0, 0, 0, 0.411);
+    border-bottom: 2px solid #00000069;
     border-bottom-left-radius: 8px;
 }
 
@@ -23,13 +23,13 @@
     margin-top: 4px;
     font-size: 15px;
     padding-inline: 3px;
-    background-color: #D9CDC1;
+    background-color: #ffffff;
     border-radius: 0;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
-    border-right: 2px solid white;
-    border-top: 2px solid white;
-    border-bottom: 2px solid white;
+    border-right: 2px solid rgba(0, 0, 0, 0.411);
+    border-top: 2px solid rgba(0, 0, 0, 0.411);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.411);
     border-bottom-right-radius: 8px;
     height: 32px;
     outline: none;

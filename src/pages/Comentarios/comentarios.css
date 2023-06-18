@@ -41,9 +41,8 @@
     font-size: 15px;
     font-family: sans-serif;
     padding-inline: 3px;
-    background-color: #D9CDC1;
-    border: 2px solid white;
-    border-color: white;
+    background-color: #ffffff;
+    border: 2px solid rgba(0, 0, 0, 0.411);
     border-radius: 8px;
     min-width: 500px;
     min-height: 70px;
@@ -69,12 +68,13 @@
     justify-content: right;
     flex-wrap: wrap;
     border-radius: 8px;
+    background-color: white;
 }
 
 .add-comentario form button{
     align-self: flex-end;
     margin-top: 1.0em;
-    background-color: #0094FF;
+    background-color: #000000;
     width: 100px;
 }
 

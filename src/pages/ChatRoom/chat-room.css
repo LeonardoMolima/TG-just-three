@@ -39,7 +39,7 @@
     margin-top: 4px;
     font-size: 15px;
     padding-inline: 3px;
-    background-color: #D9CDC1;
+    background-color: white;
     border-radius: 0;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
@@ -202,7 +202,7 @@
     width: fit-content;
     max-width: 650px;
     padding: 10px;
-    background-color:#2CA600;
+    background-color:#5a5a5a;
     border-bottom-left-radius: 8px;
     border-bottom-right-radius: 8px;
     border-top-right-radius: 8px;

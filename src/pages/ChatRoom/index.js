@@ -283,7 +283,7 @@ function ChatRoom (){
                     <div className="rooms-ChatRoom">
                         <div className="container-busca-pessoa">
                             <input type="text" className="input-buscar-pessoa-chat" placeholder="Buscar..." value={pesquisa} onChange={(e)=>{setPesquisa(e.target.value)}}/>
-                            <button className="btn-buscar-pessoa-chat" ><AiOutlineSearch size={24} color="#fff" /></button>
+                            <button className="btn-buscar-pessoa-chat" ><AiOutlineSearch size={24} color="#00000069" /></button>
                         </div>
 
                         <div className="cards-pessoas-chat">
@@ -377,7 +377,7 @@ function ChatRoom (){
                                             <span className="nome-header-chatRoom">{room.nome_UserStart}</span></>
                                             : 
                                             <><Link to={"/chat"}><button className="btn-open-chat"><AiOutlineArrowLeft size={24} color="#FFF"/></button></Link>
-                                            {room.foto_UserStart === null? <img className="img-header-chatRoom" src={avatarPerfil} /> :<img className="img-header-chatRoom" src={room.foto_UserStart} />}
+                                            {room.foto_UserStart === null? <img className="img-header-chatRoom" src={avatarPerfil} /> :<img className="img-header-chatRoom" src={room.foto_UserJoin} />}
                                             <span className="nome-header-chatRoom">{room.nome_UserJoin}</span></>}
                                         </div>
                                     )}

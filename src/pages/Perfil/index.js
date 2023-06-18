@@ -7,11 +7,11 @@ import { AuthContext } from '../../contexts/auth';
 //Monaco
 import Editor from '@monaco-editor/react';
 
-import { AiOutlineStar } from 'react-icons/ai';
+import { AiOutlineStar, AiFillDelete } from 'react-icons/ai';
 import { BsChatText } from 'react-icons/bs';
 import { db } from "../../services/FirebaseConnection";
-import { collection, query, orderBy, where, onSnapshot, getCountFromServer } from "firebase/firestore";
-
+import { collection, query, orderBy, where, onSnapshot, getCountFromServer, deleteDoc, doc } from "firebase/firestore";
+import { toast } from "react-toastify";
 import avatarPerfil from '../../assets/img/avatar.png';
 import './perfil.css';
 
@@ -80,6 +80,14 @@ function Perfil(){
         setCountFavs(somaFavs);
     }
 
+    async function deletePost(idPost){
+        const docRef = doc(db, "posts", idPost);
+        await deleteDoc(docRef)
+        .then(()=>{
+            toast.success('Postagem Apagada!');
+        });
+    }
+
     return(
         <div>
             <SideMenu/>
@@ -134,6 +142,7 @@ function Perfil(){
                                     <div className="data-hora-post">
                                         <span>{post.data}</span>
                                         <span>{post.hora}</span>
+                                        {post.id_autor === user.uid ? <span className='btn-del-post' onClick={()=>{ deletePost(post.id);}}><AiFillDelete color="#fff" size={22}/> </span> : <></>}
                                     </div>
                                 </div>
                                 

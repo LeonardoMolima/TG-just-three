@@ -174,7 +174,7 @@ function ChatIndex (){
                     <div className="rooms">
                         <div className="container-busca-pessoa">
                             <input type="text" className="input-buscar-pessoa-chat" placeholder="Buscar..." value={pesquisa} onChange={(e)=>{setPesquisa(e.target.value)}}/>
-                            <button className="btn-buscar-pessoa-chat" ><AiOutlineSearch size={24} color="#fff" /></button>
+                            <button className="btn-buscar-pessoa-chat" ><AiOutlineSearch size={24} color="#00000069" /></button>
                         </div>
 
                         <div className="cards-pessoas-chat">

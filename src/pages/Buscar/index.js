@@ -152,7 +152,7 @@ function Buscar(){
             <div className="content">
                 <div className="container-buscar">
                     <input type="text" className="input-buscar" placeholder="Buscar..." value={pesquisa} onChange={(e)=>{setPesquisa(e.target.value)}}/>
-                    <button className="btn-buscar"><AiOutlineSearch size={24} color="#fff" /></button>
+                    <button className="btn-buscar"><AiOutlineSearch size={24} color="#00000069" /></button>
                 </div>
 
                 <div className="container-opcoes-pesquisa">

@@ -29,9 +29,8 @@ input,select{
     margin-top: 4px;
     font-size: 15px;
     padding-inline: 3px;
-    background-color: #D9CDC1;
-    border: 2px solid white;
-    border-color: white;
+    background-color: #ffffff;
+    border: 2px solid rgba(0, 0, 0, 0.411);
     border-radius: 8px;
     height: 32px;
     outline: none;
@@ -52,7 +51,7 @@ input[type=submit],button{
 
 .btn-entrar{
     margin-top: 20px;
-    background-color: #0094FF;
+    background-color: #0065ad;
 }
 .btn-entrar:hover{
     opacity: 0.7;
@@ -61,7 +60,7 @@ input[type=submit],button{
 
 .btn-cadastrar{
     width: 100%;
-    background-color: #2CA600;
+    background-color: #aaa198;
 }
 .btn-cadastrar:hover{
     opacity: 0.7;
