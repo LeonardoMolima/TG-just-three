@@ -166,9 +166,9 @@ function Comentarios(){
                     <div className="posts-feed">
                                 <div className="infos-autor-post">
                                     <div className="img-names">
-                                        {post.fotoAutor === null ? <img src={avatarPerfil} alt="Foto Perfil Autor Post"/> : <img src={comment.fotoAutor} alt="Foto Perfil Autor Post"/>}
+                                        {comment.fotoAutor === null ? <img src={avatarPerfil} alt="Foto Perfil Autor Post"/> : <img src={comment.fotoAutor} alt="Foto Perfil Autor Post"/>}
                                         <div className="nome-nomeUser">
-                                            <strong>{post.nomeAutor}</strong>
+                                            <strong>{comment.nomeAutor}</strong>
                                             <Link to={"/perfilUser/"+comment.id_autor}>@{comment.nomeUserAutor}</Link>
                                         </div>
                                     </div>
